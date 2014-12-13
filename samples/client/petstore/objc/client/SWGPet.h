@@ -12,7 +12,7 @@
 @property(nonatomic) NSArray *tags;  
 @property(nonatomic) NSString *status;  /* pet status in the store  */
 
-- (id)petId:(NSNumber *)petId category:(SWGCategory *)category name:(NSString *)name photoUrls:(NSArray *)photoUrls tags:(NSArray *)tags status:(NSString *)status;
+- (instancetype)initWithPetId:(NSNumber *)petId category:(SWGCategory *)category name:(NSString *)name photoUrls:(NSArray *)photoUrls tags:(NSArray *)tags status:(NSString *)status NS_DESIGNATED_INITIALIZER;
 - (id)initWithValues:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
 

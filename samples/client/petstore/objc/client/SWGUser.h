@@ -12,7 +12,7 @@
 @property(nonatomic) NSString *phone;  
 @property(nonatomic) NSNumber *userStatus;  /* User Status  */
 
-- (id)userId:(NSNumber *)userId username:(NSString *)username firstName:(NSString *)firstName lastName:(NSString *)lastName email:(NSString *)email password:(NSString *)password phone:(NSString *)phone userStatus:(NSNumber *)userStatus;
+- (instancetype)initWithUserId:(NSNumber *)userId username:(NSString *)username firstName:(NSString *)firstName lastName:(NSString *)lastName email:(NSString *)email password:(NSString *)password phone:(NSString *)phone userStatus:(NSNumber *)userStatus NS_DESIGNATED_INITIALIZER;
 - (id)initWithValues:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
 

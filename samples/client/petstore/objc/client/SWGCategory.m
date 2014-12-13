@@ -3,26 +3,28 @@
 
 @implementation SWGCategory
 
--(id)categoryId: (NSNumber *) categoryId
-    name: (NSString *) name { 
-    
-    _categoryId = categoryId;
-    _name = name;
-    
-    return self;
-}
--(id) initWithValues:(NSDictionary*)dict
+- (instancetype)initWithCategoryId:(NSNumber *)categoryId name:(NSString *)name
 {
     self = [super init];
-    if(self) {
-        _categoryId = dict[@"id"];
-        _name = dict[@"name"];
+    if (self)
+    {
+        _categoryId = categoryId;
+        _name = name;
         
     }
+
     return self;
 }
 
--(NSDictionary*) asDictionary {
+- (id)initWithValues:(NSDictionary*)dict
+{
+    NSNumber * categoryId = dict[@"id"];
+    NSString * name = dict[@"name"];
+    
+    return [self initWithCategoryId:categoryId name:name];
+}
+
+- (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     

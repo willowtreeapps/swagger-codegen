@@ -3,42 +3,44 @@
 
 @implementation SWGOrder
 
--(id)orderId: (NSNumber *) orderId
-    petId: (NSNumber *) petId
-    quantity: (NSNumber *) quantity
-    shipDate: (SWGDate *) shipDate
-    status: (NSString *) status
-    complete: (NSNumber *) complete { 
-    
-    _orderId = orderId;
-    _petId = petId;
-    _quantity = quantity;
-    _shipDate = shipDate;
-    _status = status;
-    _complete = complete;
-    
-    return self;
-}
--(id) initWithValues:(NSDictionary*)dict
+- (instancetype)initWithOrderId:(NSNumber *)orderId petId:(NSNumber *)petId quantity:(NSNumber *)quantity shipDate:(SWGDate *)shipDate status:(NSString *)status complete:(NSNumber *)complete
 {
     self = [super init];
-    if(self) {
-        _orderId = dict[@"id"];
-        _petId = dict[@"petId"];
-        _quantity = dict[@"quantity"];
-        
-        id shipDate_dict = dict[@"shipDate"];
-        if(shipDate_dict != nil)
-            _shipDate = [[SWGDate  alloc]initWithValues:shipDate_dict];
-        
-        _status = dict[@"status"];
-        _complete = dict[@"complete"];
+    if (self)
+    {
+        _orderId = orderId;
+        _petId = petId;
+        _quantity = quantity;
+        _shipDate = shipDate;
+        _status = status;
+        _complete = complete;
         
     }
+
     return self;
 }
 
--(NSDictionary*) asDictionary {
+- (id)initWithValues:(NSDictionary*)dict
+{
+    NSNumber * orderId = dict[@"id"];
+    NSNumber * petId = dict[@"petId"];
+    NSNumber * quantity = dict[@"quantity"];
+    
+    id shipDate_dict = dict[@"shipDate"];
+    
+    SWGDate * shipDate = nil;
+    if(shipDate_dict != nil)
+    {
+        shipDate = [[SWGDate  alloc]initWithValues:shipDate_dict];
+    }
+    
+    NSString * status = dict[@"status"];
+    NSNumber * complete = dict[@"complete"];
+    
+    return [self initWithOrderId:orderId petId:petId quantity:quantity shipDate:shipDate status:status complete:complete];
+}
+
+- (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     

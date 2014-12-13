@@ -11,7 +11,7 @@
 @property(nonatomic) NSString *status;  /* Order Status  */
 @property(nonatomic) NSNumber *complete;  
 
-- (id)orderId:(NSNumber *)orderId petId:(NSNumber *)petId quantity:(NSNumber *)quantity shipDate:(SWGDate *)shipDate status:(NSString *)status complete:(NSNumber *)complete;
+- (instancetype)initWithOrderId:(NSNumber *)orderId petId:(NSNumber *)petId quantity:(NSNumber *)quantity shipDate:(SWGDate *)shipDate status:(NSString *)status complete:(NSNumber *)complete NS_DESIGNATED_INITIALIZER;
 - (id)initWithValues:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
 

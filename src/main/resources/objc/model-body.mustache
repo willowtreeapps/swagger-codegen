@@ -6,44 +6,57 @@
 @implementation {{classname}}{{#parent}}: {{parent}}{{/parent}}
 
 {{#hasVars}}
--(id){{#vars}}{{name}}: ({{datatype}}) {{name}}{{^hasMore}} { {{/hasMore}}
-    {{/vars}}
-    {{#vars}}_{{name}} = {{name}};
-    {{/vars}}
+- (instancetype)initWith{{#initialVar}}{{name}}:({{datatype}}){{lowercaseName}}{{/initialVar}}{{#remainingVars}} {{name}}:({{datatype}}){{name}}{{^hasMore}}{{/hasMore}}{{/remainingVars}}
+{
+    self = [super init];
+    if (self)
+    {
+        {{#vars}}_{{name}} = {{name}};
+        {{/vars}}
+    }
+
     return self;
 }
 {{/hasVars}}
--(id) initWithValues:(NSDictionary*)dict
+
+- (id)initWithValues:(NSDictionary*)dict
 {
-    self = [super init];
-    if(self) {
-        {{#vars}}{{#isPrimitiveType}}_{{name}} = dict[@"{{baseName}}"];{{/isPrimitiveType}}
-        {{#complexType}}id {{name}}_dict = dict[@"{{baseName}}"];{{#isContainer}}
-        if([{{name}}_dict isKindOfClass:[NSArray class]]) {
-            NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[(NSArray*){{name}}_dict count]];
-            if([(NSArray*){{name}}_dict count] > 0) {
-                for (NSDictionary* dict in (NSArray*){{name}}_dict) {
-                    {{{complexType}}}* d = [[{{#instantiationType}}NSClassFromString(@"{{{instantiationType}}}") {{/instantiationType}}{{^instantiationType}}{{{complexType}}} {{/instantiationType}} alloc] initWithValues:dict];
-                    [objs addObject:d];
-                }
-                _{{{name}}} = [[NSArray alloc] initWithArray:objs];
+    {{#vars}}{{#isPrimitiveType}}{{datatype}} {{name}} = dict[@"{{baseName}}"];{{/isPrimitiveType}}
+    {{#complexType}}id {{name}}_dict = dict[@"{{baseName}}"];{{#isContainer}}
+    NSArray *{{name}} = nil;
+    if([{{name}}_dict isKindOfClass:[NSArray class]])
+    {
+        NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[(NSArray*){{name}}_dict count]];
+        if([(NSArray*){{name}}_dict count] > 0)
+        {
+            for (NSDictionary* dict in (NSArray*){{name}}_dict)
+            {
+                {{{complexType}}}* d = [[{{#instantiationType}}NSClassFromString(@"{{{instantiationType}}}") {{/instantiationType}}{{^instantiationType}}{{{complexType}}} {{/instantiationType}} alloc] initWithValues:dict];
+                [objs addObject:d];
             }
-            else {
-                _{{name}} = [[NSArray alloc] init];
-            }
+            {{{name}}} = [[NSArray alloc] initWithArray:objs];
         }
-        else {
-            _{{name}} = [[NSArray alloc] init];
-        }{{/isContainer}}
-        {{#isNotContainer}}if({{name}}_dict != nil)
-            _{{name}} = [[{{#instantiationType}}NSClassFromString(@"{{{instantiationType}}}") {{/instantiationType}}{{^instantiationType}}{{{complexType}}} {{/instantiationType}} alloc]initWithValues:{{name}}_dict];
-        {{/isNotContainer}}
-        {{/complexType}}{{/vars}}
+        else
+        {
+            {{name}} = [[NSArray alloc] init];
+        }
     }
-    return self;
+    else
+    {
+        {{name}} = [[NSArray alloc] init];
+    }{{/isContainer}}
+    {{#isNotContainer}}
+    {{datatype}} {{name}} = nil;
+    if({{name}}_dict != nil)
+    {
+        {{name}} = [[{{#instantiationType}}NSClassFromString(@"{{{instantiationType}}}") {{/instantiationType}}{{^instantiationType}}{{{complexType}}} {{/instantiationType}} alloc]initWithValues:{{name}}_dict];
+    }
+    {{/isNotContainer}}
+    {{/complexType}}{{/vars}}
+    return [self initWith{{#initialVar}}{{name}}:{{lowercaseName}}{{/initialVar}}{{#remainingVars}} {{name}}:{{name}}{{^hasMore}}{{/hasMore}}{{/remainingVars}}];
 }
 
--(NSDictionary*) asDictionary {
+- (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     {{#vars}}{{#complexType}}
     if(_{{name}} != nil){

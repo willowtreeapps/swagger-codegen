@@ -3,44 +3,40 @@
 
 @implementation SWGUser
 
--(id)userId: (NSNumber *) userId
-    username: (NSString *) username
-    firstName: (NSString *) firstName
-    lastName: (NSString *) lastName
-    email: (NSString *) email
-    password: (NSString *) password
-    phone: (NSString *) phone
-    userStatus: (NSNumber *) userStatus { 
-    
-    _userId = userId;
-    _username = username;
-    _firstName = firstName;
-    _lastName = lastName;
-    _email = email;
-    _password = password;
-    _phone = phone;
-    _userStatus = userStatus;
-    
-    return self;
-}
--(id) initWithValues:(NSDictionary*)dict
+- (instancetype)initWithUserId:(NSNumber *)userId username:(NSString *)username firstName:(NSString *)firstName lastName:(NSString *)lastName email:(NSString *)email password:(NSString *)password phone:(NSString *)phone userStatus:(NSNumber *)userStatus
 {
     self = [super init];
-    if(self) {
-        _userId = dict[@"id"];
-        _username = dict[@"username"];
-        _firstName = dict[@"firstName"];
-        _lastName = dict[@"lastName"];
-        _email = dict[@"email"];
-        _password = dict[@"password"];
-        _phone = dict[@"phone"];
-        _userStatus = dict[@"userStatus"];
+    if (self)
+    {
+        _userId = userId;
+        _username = username;
+        _firstName = firstName;
+        _lastName = lastName;
+        _email = email;
+        _password = password;
+        _phone = phone;
+        _userStatus = userStatus;
         
     }
+
     return self;
 }
 
--(NSDictionary*) asDictionary {
+- (id)initWithValues:(NSDictionary*)dict
+{
+    NSNumber * userId = dict[@"id"];
+    NSString * username = dict[@"username"];
+    NSString * firstName = dict[@"firstName"];
+    NSString * lastName = dict[@"lastName"];
+    NSString * email = dict[@"email"];
+    NSString * password = dict[@"password"];
+    NSString * phone = dict[@"phone"];
+    NSNumber * userStatus = dict[@"userStatus"];
+    
+    return [self initWithUserId:userId username:username firstName:firstName lastName:lastName email:email password:password phone:phone userStatus:userStatus];
+}
+
+- (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     

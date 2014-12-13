@@ -6,7 +6,7 @@
 @property(nonatomic) NSNumber *tagId;  
 @property(nonatomic) NSString *name;  
 
-- (id)tagId:(NSNumber *)tagId name:(NSString *)name;
+- (instancetype)initWithTagId:(NSNumber *)tagId name:(NSString *)name NS_DESIGNATED_INITIALIZER;
 - (id)initWithValues:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
 

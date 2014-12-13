@@ -12,7 +12,7 @@
 {{/vars}}
 
 {{#hasVars}}
-- (id){{#vars}}{{name}}:({{datatype}}){{name}}{{#hasMore}} {{/hasMore}}{{^hasMore}};{{/hasMore}}{{/vars}}
+- (instancetype)initWith{{#initialVar}}{{name}}:({{datatype}}){{lowercaseName}}{{/initialVar}}{{#remainingVars}} {{name}}:({{datatype}}){{name}}{{#hasMore}}{{/hasMore}}{{^hasMore}}{{/hasMore}}{{/remainingVars}} NS_DESIGNATED_INITIALIZER;
 {{/hasVars}}
 - (id)initWithValues:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
