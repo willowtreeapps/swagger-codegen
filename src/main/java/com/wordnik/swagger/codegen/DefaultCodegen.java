@@ -22,6 +22,7 @@ public class DefaultCodegen {
   protected String templateDir;
   protected Map<String, Object> additionalProperties = new HashMap<String, Object>();
   protected List<SupportingFile> supportingFiles = new ArrayList<SupportingFile>();
+  protected String basePackage;
 
   public void processOpts(){
     if(additionalProperties.containsKey("templateDir")) {
@@ -75,6 +76,9 @@ public class DefaultCodegen {
   }
   public String apiPackage() {
     return apiPackage;
+  }
+  public String basePackage() {
+    return basePackage;
   }
   public String fileSuffix() {
     return fileSuffix;
