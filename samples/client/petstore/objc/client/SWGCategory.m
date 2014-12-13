@@ -16,7 +16,7 @@
     return self;
 }
 
-- (id)initWithValues:(NSDictionary*)dict
+- (instancetype)initWithValues:(NSDictionary*)dict
 {
     NSNumber * categoryId = dict[@"id"];
     NSString * name = dict[@"name"];

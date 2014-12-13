@@ -20,7 +20,7 @@
     return self;
 }
 
-- (id)initWithValues:(NSDictionary*)dict
+- (instancetype)initWithValues:(NSDictionary*)dict
 {
     NSNumber * petId = dict[@"id"];
     

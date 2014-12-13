@@ -22,7 +22,7 @@
     return self;
 }
 
-- (id)initWithValues:(NSDictionary*)dict
+- (instancetype)initWithValues:(NSDictionary*)dict
 {
     NSNumber * userId = dict[@"id"];
     NSString * username = dict[@"username"];
