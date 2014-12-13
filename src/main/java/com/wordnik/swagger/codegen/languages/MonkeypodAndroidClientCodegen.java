@@ -4,6 +4,9 @@ import com.wordnik.swagger.codegen.CodegenConfig;
 import com.wordnik.swagger.codegen.DefaultCodegen;
 import com.wordnik.swagger.codegen.DefaultGenerator;
 import com.wordnik.swagger.codegen.SupportingFile;
+import com.wordnik.swagger.models.properties.ArrayProperty;
+import com.wordnik.swagger.models.properties.MapProperty;
+import com.wordnik.swagger.models.properties.Property;
 
 import java.io.File;
 import java.util.Arrays;
@@ -14,29 +17,24 @@ import java.util.HashSet;
  */
 public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements CodegenConfig {
 
-    //TODO: CHANGE HARDCODED VARIABLES
     protected String invokerPackage = "com.wordnik.client";
-    protected String groupId = "com.wordnik";
-    protected String artifactId = "swagger-client";
-    protected String artifactVersion = "1.0.0";
     protected String sourceFolder = "src/main/java";
+    protected String packageName = "";
 
 
     public MonkeypodAndroidClientCodegen() {
         super();
-        //maybe change this output folder
-        outputFolder = "generated-code/android";
+        outputFolder = (String) additionalProperties.get("output-folder");
         modelTemplateFiles.put("model.mustache", ".java");
         apiTemplateFiles.put("api.mustache", ".java");
         templateDir = "android-java";
+
+        //TODO NEED TO CHANGE API PACKAGE AND MODEL PACKAGE TO BE PASSED IN PARAMETERS
         apiPackage = "com.wordnik.client.api";
         modelPackage = "com.wordnik.client.model";
 
 
         additionalProperties.put("invokerPackage", invokerPackage);
-        additionalProperties.put("groupId", groupId);
-        additionalProperties.put("artifactId", artifactId);
-        additionalProperties.put("artifactVersion", artifactVersion);
 
         supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
         supportingFiles.add(new SupportingFile("apiInvoker.mustache",
@@ -61,6 +59,50 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
         );
         instantiationTypes.put("array", "ArrayList");
         instantiationTypes.put("map", "HashMap");
+    }
+
+    @Override
+    public String escapeReservedWord(String name) {
+        return "_" + name;
+    }
+
+    @Override
+    public String apiFileFolder() {
+        return outputFolder + File.separator + sourceFolder + File.separator + apiPackage().replaceAll("\\.", File.separator);
+    }
+
+    public String modelFileFolder() {
+        return outputFolder + File.separator + sourceFolder + File.separator + modelPackage().replaceAll("\\.", File.separator);
+    }
+
+    @Override
+    public String getTypeDeclaration(Property p) {
+        if(p instanceof ArrayProperty) {
+            ArrayProperty ap = (ArrayProperty) p;
+            Property inner = ap.getItems();
+            return getSwaggerType(p) + "<" + getTypeDeclaration(inner) + ">";
+        }
+        else if (p instanceof MapProperty) {
+            MapProperty mp = (MapProperty) p;
+            Property inner = mp.getAdditionalProperties();
+
+            return getSwaggerType(p) + "<String, " + getTypeDeclaration(inner) + ">";
+        }
+        return super.getTypeDeclaration(p);
+    }
+
+    @Override
+    public String getSwaggerType(Property p) {
+        String swaggerType = super.getSwaggerType(p);
+        String type = null;
+        if(typeMapping.containsKey(swaggerType)) {
+            type = typeMapping.get(swaggerType);
+            if(languageSpecificPrimitives.contains(type))
+                return toModelName(type);
+        }
+        else
+            type = swaggerType;
+        return toModelName(type);
     }
 
     @Override

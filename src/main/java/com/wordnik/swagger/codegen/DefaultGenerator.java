@@ -173,6 +173,9 @@ public class DefaultGenerator implements Generator {
         File of = new File(outputFolder);
         if(!of.isDirectory())
           of.mkdirs();
+        //put the output folder location to make use of in the codegen
+        config.additionalProperties().put("output-folder", outputFolder);
+
         String outputFilename = outputFolder + File.separator + support.destinationFilename;
 
         if(support.templateFile.endsWith("mustache")) {
