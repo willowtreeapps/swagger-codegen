@@ -17,7 +17,7 @@
  @param body Pet object that needs to be added to the store
  
  */
--(NSNumber*) updatePetWithCompletionBlock : (SWGPet*) body
+-(NSNumber*) updatePetWithCompletionBlock : (SWGPet *) body
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -28,7 +28,7 @@
  @param pet Pet object that needs to be added to the store
  
  */
--(NSNumber*) addPetWithCompletionBlock : (SWGPet*) pet
+-(NSNumber*) addPetWithCompletionBlock : (SWGPet *) pet
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -39,8 +39,8 @@
  @param status Status values that need to be considered for filter
  
  */
--(NSNumber*) findPetsByStatusWithCompletionBlock : (NSArray*) status
-    completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock;
+-(NSNumber*) findPetsByStatusWithCompletionBlock : (NSArray *) status
+    completionHandler: (void (^)(NSArray * output, NSError* error))completionBlock;
 
 /**
 
@@ -50,8 +50,8 @@
  @param tags Tags to filter by
  
  */
--(NSNumber*) findPetsByTagsWithCompletionBlock : (NSArray*) tags
-    completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock;
+-(NSNumber*) findPetsByTagsWithCompletionBlock : (NSArray *) tags
+    completionHandler: (void (^)(NSArray * output, NSError* error))completionBlock;
 
 /**
 
@@ -61,8 +61,8 @@
  @param petId ID of pet that needs to be fetched
  
  */
--(NSNumber*) getPetByIdWithCompletionBlock : (NSNumber*) petId
-    completionHandler: (void (^)(SWGPet* output, NSError* error))completionBlock;
+-(NSNumber*) getPetByIdWithCompletionBlock : (NSNumber *) petId
+    completionHandler: (void (^)(SWGPet * output, NSError* error))completionBlock;
 
 /**
 
@@ -74,9 +74,9 @@
  @param status Updated status of the pet
  
  */
--(NSNumber*) updatePetWithFormWithCompletionBlock : (NSString*) petId
-            name: (NSString*) name
-            status: (NSString*) status
+-(NSNumber*) updatePetWithFormWithCompletionBlock : (NSString *) petId
+            name: (NSString *) name
+            status: (NSString *) status
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -88,8 +88,8 @@
  @param petId Pet id to delete
  
  */
--(NSNumber*) deletePetWithCompletionBlock : (NSString*) api_key
-            petId: (NSNumber*) petId
+-(NSNumber*) deletePetWithCompletionBlock : (NSString *) api_key
+            petId: (NSNumber *) petId
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 @end

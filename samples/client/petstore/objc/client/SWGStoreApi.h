@@ -17,8 +17,8 @@
  @param body order placed for purchasing the pet
  
  */
--(NSNumber*) placeOrderWithCompletionBlock : (SWGOrder*) body
-    completionHandler: (void (^)(SWGOrder* output, NSError* error))completionBlock;
+-(NSNumber*) placeOrderWithCompletionBlock : (SWGOrder *) body
+    completionHandler: (void (^)(SWGOrder * output, NSError* error))completionBlock;
 
 /**
 
@@ -28,8 +28,8 @@
  @param orderId ID of pet that needs to be fetched
  
  */
--(NSNumber*) getOrderByIdWithCompletionBlock : (NSString*) orderId
-    completionHandler: (void (^)(SWGOrder* output, NSError* error))completionBlock;
+-(NSNumber*) getOrderByIdWithCompletionBlock : (NSString *) orderId
+    completionHandler: (void (^)(SWGOrder * output, NSError* error))completionBlock;
 
 /**
 
@@ -39,7 +39,7 @@
  @param orderId ID of the order that needs to be deleted
  
  */
--(NSNumber*) deleteOrderWithCompletionBlock : (NSString*) orderId
+-(NSNumber*) deleteOrderWithCompletionBlock : (NSString *) orderId
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 @end

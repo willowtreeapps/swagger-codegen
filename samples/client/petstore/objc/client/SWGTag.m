@@ -3,10 +3,10 @@
 
 @implementation SWGTag
 
--(id)_id: (NSNumber*) _id
-    name: (NSString*) name { 
+-(id)tagId: (NSNumber *) tagId
+    name: (NSString *) name { 
     
-    __id = _id;
+    _tagId = tagId;
     _name = name;
     
     return self;
@@ -15,7 +15,7 @@
 {
     self = [super init];
     if(self) {
-        __id = dict[@"id"];
+        _tagId = dict[@"id"];
         _name = dict[@"name"];
         
     }
@@ -26,8 +26,8 @@
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     
-    if(__id != nil)
-        dict[@"id"] = __id;
+    if(_tagId != nil)
+        dict[@"id"] = _tagId;
     
     
     

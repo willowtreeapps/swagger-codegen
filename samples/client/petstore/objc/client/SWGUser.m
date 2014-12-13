@@ -3,16 +3,16 @@
 
 @implementation SWGUser
 
--(id)_id: (NSNumber*) _id
-    username: (NSString*) username
-    firstName: (NSString*) firstName
-    lastName: (NSString*) lastName
-    email: (NSString*) email
-    password: (NSString*) password
-    phone: (NSString*) phone
-    userStatus: (NSNumber*) userStatus { 
+-(id)userId: (NSNumber *) userId
+    username: (NSString *) username
+    firstName: (NSString *) firstName
+    lastName: (NSString *) lastName
+    email: (NSString *) email
+    password: (NSString *) password
+    phone: (NSString *) phone
+    userStatus: (NSNumber *) userStatus { 
     
-    __id = _id;
+    _userId = userId;
     _username = username;
     _firstName = firstName;
     _lastName = lastName;
@@ -27,7 +27,7 @@
 {
     self = [super init];
     if(self) {
-        __id = dict[@"id"];
+        _userId = dict[@"id"];
         _username = dict[@"username"];
         _firstName = dict[@"firstName"];
         _lastName = dict[@"lastName"];
@@ -44,8 +44,8 @@
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     
-    if(__id != nil)
-        dict[@"id"] = __id;
+    if(_userId != nil)
+        dict[@"id"] = _userId;
     
     
     

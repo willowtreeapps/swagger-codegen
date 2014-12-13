@@ -17,7 +17,7 @@
  @param body Created user object
  
  */
--(NSNumber*) createUserWithCompletionBlock : (SWGUser*) body
+-(NSNumber*) createUserWithCompletionBlock : (SWGUser *) body
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -28,7 +28,7 @@
  @param body List of user object
  
  */
--(NSNumber*) createUsersWithArrayInputWithCompletionBlock : (NSArray*) body
+-(NSNumber*) createUsersWithArrayInputWithCompletionBlock : (NSArray *) body
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -39,7 +39,7 @@
  @param body List of user object
  
  */
--(NSNumber*) createUsersWithListInputWithCompletionBlock : (NSArray*) body
+-(NSNumber*) createUsersWithListInputWithCompletionBlock : (NSArray *) body
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -51,9 +51,9 @@
  @param password The password for login in clear text
  
  */
--(NSNumber*) loginUserWithCompletionBlock : (NSString*) username
-            password: (NSString*) password
-    completionHandler: (void (^)(NSString* output, NSError* error))completionBlock;
+-(NSNumber*) loginUserWithCompletionBlock : (NSString *) username
+            password: (NSString *) password
+    completionHandler: (void (^)(NSString * output, NSError* error))completionBlock;
 
 /**
 
@@ -73,8 +73,8 @@
  @param username The name that needs to be fetched. Use user1 for testing. 
  
  */
--(NSNumber*) getUserByNameWithCompletionBlock : (NSString*) username
-    completionHandler: (void (^)(SWGUser* output, NSError* error))completionBlock;
+-(NSNumber*) getUserByNameWithCompletionBlock : (NSString *) username
+    completionHandler: (void (^)(SWGUser * output, NSError* error))completionBlock;
 
 /**
 
@@ -85,8 +85,8 @@
  @param body Updated user object
  
  */
--(NSNumber*) updateUserWithCompletionBlock : (NSString*) username
-            body: (SWGUser*) body
+-(NSNumber*) updateUserWithCompletionBlock : (NSString *) username
+            body: (SWGUser *) body
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 /**
@@ -97,7 +97,7 @@
  @param username The name that needs to be deleted
  
  */
--(NSNumber*) deleteUserWithCompletionBlock : (NSString*) username
+-(NSNumber*) deleteUserWithCompletionBlock : (NSString *) username
 
     completionHandler: (void (^)(NSError* error))completionBlock;
 @end

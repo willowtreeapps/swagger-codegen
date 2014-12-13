@@ -3,14 +3,14 @@
 
 @implementation SWGPet
 
--(id)_id: (NSNumber*) _id
-    category: (SWGCategory*) category
-    name: (NSString*) name
-    photoUrls: (NSArray*) photoUrls
-    tags: (NSArray*) tags
-    status: (NSString*) status { 
+-(id)petId: (NSNumber *) petId
+    category: (SWGCategory *) category
+    name: (NSString *) name
+    photoUrls: (NSArray *) photoUrls
+    tags: (NSArray *) tags
+    status: (NSString *) status { 
     
-    __id = _id;
+    _petId = petId;
     _category = category;
     _name = name;
     _photoUrls = photoUrls;
@@ -23,7 +23,7 @@
 {
     self = [super init];
     if(self) {
-        __id = dict[@"id"];
+        _petId = dict[@"id"];
         
         id category_dict = dict[@"category"];
         if(category_dict != nil)
@@ -60,8 +60,8 @@
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     
-    if(__id != nil)
-        dict[@"id"] = __id;
+    if(_petId != nil)
+        dict[@"id"] = _petId;
     
     
     
