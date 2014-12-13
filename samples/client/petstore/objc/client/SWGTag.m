@@ -3,26 +3,28 @@
 
 @implementation SWGTag
 
--(id)tagId: (NSNumber *) tagId
-    name: (NSString *) name { 
-    
-    _tagId = tagId;
-    _name = name;
-    
-    return self;
-}
--(id) initWithValues:(NSDictionary*)dict
+- (instancetype)initWithTagId:(NSNumber *)tagId name:(NSString *)name
 {
     self = [super init];
-    if(self) {
-        _tagId = dict[@"id"];
-        _name = dict[@"name"];
+    if (self)
+    {
+        _tagId = tagId;
+        _name = name;
         
     }
+
     return self;
 }
 
--(NSDictionary*) asDictionary {
+- (id)initWithValues:(NSDictionary*)dict
+{
+    NSNumber * tagId = dict[@"id"];
+    NSString * name = dict[@"name"];
+    
+    return [self initWithTagId:tagId name:name];
+}
+
+- (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     

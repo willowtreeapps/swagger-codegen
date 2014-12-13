@@ -4,7 +4,7 @@ import java.util.*;
 
 public class CodegenProperty {
   public String baseName, complexType, getter, setter, description, datatype,
-    name, min, max, defaultValue, baseType, containerType;
+    name, min, max, defaultValue, baseType, containerType, lowercaseName;
 
   /** maxLength validation for strings, see http://json-schema.org/latest/json-schema-validation.html#rfc.section.5.2.1 */
   public Integer maxLength;

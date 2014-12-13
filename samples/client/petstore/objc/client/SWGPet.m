@@ -3,60 +3,68 @@
 
 @implementation SWGPet
 
--(id)petId: (NSNumber *) petId
-    category: (SWGCategory *) category
-    name: (NSString *) name
-    photoUrls: (NSArray *) photoUrls
-    tags: (NSArray *) tags
-    status: (NSString *) status { 
-    
-    _petId = petId;
-    _category = category;
-    _name = name;
-    _photoUrls = photoUrls;
-    _tags = tags;
-    _status = status;
-    
-    return self;
-}
--(id) initWithValues:(NSDictionary*)dict
+- (instancetype)initWithPetId:(NSNumber *)petId category:(SWGCategory *)category name:(NSString *)name photoUrls:(NSArray *)photoUrls tags:(NSArray *)tags status:(NSString *)status
 {
     self = [super init];
-    if(self) {
-        _petId = dict[@"id"];
-        
-        id category_dict = dict[@"category"];
-        if(category_dict != nil)
-            _category = [[SWGCategory  alloc]initWithValues:category_dict];
-        
-        _name = dict[@"name"];
-        _photoUrls = dict[@"photoUrls"];
-        
-        id tags_dict = dict[@"tags"];
-        if([tags_dict isKindOfClass:[NSArray class]]) {
-            NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[(NSArray*)tags_dict count]];
-            if([(NSArray*)tags_dict count] > 0) {
-                for (NSDictionary* dict in (NSArray*)tags_dict) {
-                    SWGTag* d = [[SWGTag  alloc] initWithValues:dict];
-                    [objs addObject:d];
-                }
-                _tags = [[NSArray alloc] initWithArray:objs];
-            }
-            else {
-                _tags = [[NSArray alloc] init];
-            }
-        }
-        else {
-            _tags = [[NSArray alloc] init];
-        }
-        
-        _status = dict[@"status"];
+    if (self)
+    {
+        _petId = petId;
+        _category = category;
+        _name = name;
+        _photoUrls = photoUrls;
+        _tags = tags;
+        _status = status;
         
     }
+
     return self;
 }
 
--(NSDictionary*) asDictionary {
+- (id)initWithValues:(NSDictionary*)dict
+{
+    NSNumber * petId = dict[@"id"];
+    
+    id category_dict = dict[@"category"];
+    
+    SWGCategory * category = nil;
+    if(category_dict != nil)
+    {
+        category = [[SWGCategory  alloc]initWithValues:category_dict];
+    }
+    
+    NSString * name = dict[@"name"];
+    NSArray * photoUrls = dict[@"photoUrls"];
+    
+    id tags_dict = dict[@"tags"];
+    NSArray *tags = nil;
+    if([tags_dict isKindOfClass:[NSArray class]])
+    {
+        NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[(NSArray*)tags_dict count]];
+        if([(NSArray*)tags_dict count] > 0)
+        {
+            for (NSDictionary* dict in (NSArray*)tags_dict)
+            {
+                SWGTag* d = [[SWGTag  alloc] initWithValues:dict];
+                [objs addObject:d];
+            }
+            tags = [[NSArray alloc] initWithArray:objs];
+        }
+        else
+        {
+            tags = [[NSArray alloc] init];
+        }
+    }
+    else
+    {
+        tags = [[NSArray alloc] init];
+    }
+    
+    NSString * status = dict[@"status"];
+    
+    return [self initWithPetId:petId category:category name:name photoUrls:photoUrls tags:tags status:status];
+}
+
+- (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     

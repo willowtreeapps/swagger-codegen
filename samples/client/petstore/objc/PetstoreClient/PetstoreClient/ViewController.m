@@ -24,7 +24,7 @@
     
     [api getPetByIdWithCompletionBlock:@10 completionHandler:^(SWGPet *output, NSError *error) {
         NSLog(@"%@", [output asDictionary]);
-        [output set_id:@101];
+        [output setPetId:@101];
         [api addPetWithCompletionBlock:output completionHandler:^(NSError *error) {
             NSLog(@"Done!");
         }];
