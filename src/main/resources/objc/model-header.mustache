@@ -12,12 +12,10 @@
 @property(nonatomic) {{datatype}} {{name}};  {{#description}}/* {{{description}}} {{#isNotRequired}}[optional]{{/isNotRequired}} */{{/description}}{{newline}}
 {{/vars}}
 {{#hasVars}}
-- (id) {{#vars}}{{name}}: ({{datatype}}) {{name}}{{#hasMore}}
-  {{/hasMore}}{{^hasMore}};{{/hasMore}}
-       {{/vars}}
+- (id){{#vars}}{{name}}:({{datatype}}){{name}}{{#hasMore}} {{/hasMore}}{{^hasMore}};{{/hasMore}}{{/vars}}
 {{/hasVars}}
-- (id) initWithValues: (NSDictionary*)dict;
-- (NSDictionary*) asDictionary;
+- (id)initWithValues:(NSDictionary *)dict;
+- (NSDictionary *)asDictionary;
 {{newline}}
 @end
 {{/model}}
