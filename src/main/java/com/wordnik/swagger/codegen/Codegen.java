@@ -41,16 +41,16 @@ public class Codegen extends DefaultGenerator {
       CommandLineParser parser = new BasicParser();
 
       cmd = parser.parse(options, args);
-      if (cmd.hasOption("l"))
-        clientOptInput.setConfig(getConfig(cmd.getOptionValue("l"), configs));
-      if (cmd.hasOption("o"))
-        clientOptInput.getConfig().setOutputDir(cmd.getOptionValue("o"));
       if (cmd.hasOption("p")) {
         CodegenConfig config = getConfig(String.valueOf(cmd.getOptionValue("l")), configs);
         if (config != null) {
           config.additionalProperties().put("package", cmd.getOptionValue("p"));
         }
       }
+      if (cmd.hasOption("l"))
+        clientOptInput.setConfig(getConfig(cmd.getOptionValue("l"), configs));
+      if (cmd.hasOption("o"))
+        clientOptInput.getConfig().setOutputDir(cmd.getOptionValue("o"));
       if (cmd.hasOption("h")) {
         if(cmd.hasOption("l")) {
           CodegenConfig config = getConfig(String.valueOf(cmd.getOptionValue("l")), configs);
