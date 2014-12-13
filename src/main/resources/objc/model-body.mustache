@@ -19,7 +19,7 @@
 }
 {{/hasVars}}
 
-- (id)initWithValues:(NSDictionary*)dict
+- (instancetype)initWithValues:(NSDictionary*)dict
 {
     {{#vars}}{{#isPrimitiveType}}{{datatype}} {{name}} = dict[@"{{baseName}}"];{{/isPrimitiveType}}
     {{#complexType}}id {{name}}_dict = dict[@"{{baseName}}"];{{#isContainer}}
