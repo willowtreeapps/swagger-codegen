@@ -28,6 +28,8 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
         apiTemplateFiles.put("api.mustache", ".java");
         templateDir = "android-java";
         basePackage = (String) additionalProperties.get("package");
+        modelPackage = basePackage + ".model";
+        apiPackage = basePackage + ".client";
 
         languageSpecificPrimitives = new HashSet<String>(
                 Arrays.asList(
@@ -51,11 +53,11 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
 
     @Override
     public String apiFileFolder() {
-        return outputFolder + File.separator + sourceFolder + File.separator + (basePackage() + ".client").replaceAll("\\.", File.separator);
+        return outputFolder + File.separator + sourceFolder + File.separator + apiPackage().replaceAll("\\.", File.separator);
     }
 
     public String modelFileFolder() {
-        return outputFolder + File.separator + sourceFolder + File.separator + (basePackage() + ".model").replaceAll("\\.", File.separator);
+        return outputFolder + File.separator + sourceFolder + File.separator + modelPackage().replaceAll("\\.", File.separator);
     }
 
     @Override
