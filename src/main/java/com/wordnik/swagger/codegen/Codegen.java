@@ -44,7 +44,7 @@ public class Codegen extends DefaultGenerator {
       if (cmd.hasOption("p")) {
         CodegenConfig config = getConfig(String.valueOf(cmd.getOptionValue("l")), configs);
         if (config != null) {
-          config.additionalProperties().put("package", cmd.getOptionValue("p"));
+          clientOptInput.getConfig().setPackages(cmd.getOptionValue("package", cmd.getOptionValue("p")));
         }
       }
       if (cmd.hasOption("l"))

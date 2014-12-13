@@ -114,6 +114,11 @@ public class DefaultCodegen {
   public void setOutputDir(String dir) {
     this.outputFolder = dir;
   }
+  public void setPackages(String basePackage) {
+    this.basePackage = basePackage;
+    this.apiPackage = basePackage + ".client";
+    this.modelPackage = basePackage + ".model";
+  }
   public String getOutputDir() {
     return outputFolder();
   }

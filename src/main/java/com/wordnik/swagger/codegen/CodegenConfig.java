@@ -29,6 +29,7 @@ public interface CodegenConfig {
   List<SupportingFile> supportingFiles();
 
   void setOutputDir(String dir);
+  void setPackages(String basePackage);
   String getOutputDir();
 
   CodegenModel fromModel(String name, Model model);
