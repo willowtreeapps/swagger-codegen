@@ -17,7 +17,6 @@ import java.util.HashSet;
  */
 public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements CodegenConfig {
 
-    protected String invokerPackage = "com.wordnik.client";
     protected String sourceFolder = "src/main/java";
     protected String packageName = "";
 
@@ -28,23 +27,7 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
         modelTemplateFiles.put("model.mustache", ".java");
         apiTemplateFiles.put("api.mustache", ".java");
         templateDir = "android-java";
-
-        //TODO NEED TO CHANGE API PACKAGE AND MODEL PACKAGE TO BE PASSED IN PARAMETERS
-        apiPackage = "com.wordnik.client.api";
-        modelPackage = "com.wordnik.client.model";
-
-
-        additionalProperties.put("invokerPackage", invokerPackage);
-
-        supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
-        supportingFiles.add(new SupportingFile("apiInvoker.mustache",
-                (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "ApiInvoker.java"));
-        supportingFiles.add(new SupportingFile("httpPatch.mustache",
-                (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "HttpPatch.java"));
-        supportingFiles.add(new SupportingFile("jsonUtil.mustache",
-                (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "JsonUtil.java"));
-        supportingFiles.add(new SupportingFile("apiException.mustache",
-                (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "ApiException.java"));
+        basePackage = (String) additionalProperties.get("package");
 
         languageSpecificPrimitives = new HashSet<String>(
                 Arrays.asList(
@@ -68,11 +51,11 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
 
     @Override
     public String apiFileFolder() {
-        return outputFolder + File.separator + sourceFolder + File.separator + apiPackage().replaceAll("\\.", File.separator);
+        return outputFolder + File.separator + sourceFolder + File.separator + (basePackage() + ".client").replaceAll("\\.", File.separator);
     }
 
     public String modelFileFolder() {
-        return outputFolder + File.separator + sourceFolder + File.separator + modelPackage().replaceAll("\\.", File.separator);
+        return outputFolder + File.separator + sourceFolder + File.separator + (basePackage() + ".model").replaceAll("\\.", File.separator);
     }
 
     @Override
