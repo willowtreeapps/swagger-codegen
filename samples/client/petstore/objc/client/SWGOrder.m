@@ -43,53 +43,49 @@
 - (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
-    
     if(_orderId != nil)
+    {
         dict[@"id"] = _orderId;
-    
-    
-    
-    
-    if(_petId != nil)
-        dict[@"petId"] = _petId;
-    
-    
-    
-    
-    if(_quantity != nil)
-        dict[@"quantity"] = _quantity;
-    
-    
-    
-    if(_shipDate != nil){
-        
-        
-        if(_shipDate && [_shipDate isKindOfClass:[SWGDate class]]) {
-            NSString * dateString = [(SWGDate*)_shipDate toString];
-            if(dateString){
-            dict[@"shipDate"] = dateString;
-            }
-        }
-        else {
-            if(_shipDate != nil)
-            dict[@"shipDate"] = [(SWGObject*)_shipDate asDictionary];
-        }
-        
     }
     
+    if(_petId != nil)
+    {
+        dict[@"petId"] = _petId;
+    }
     
+    if(_quantity != nil)
+    {
+        dict[@"quantity"] = _quantity;
+    }
+    
+    if(_shipDate != nil)
+    { 
+        if(_shipDate && [_shipDate isKindOfClass:[SWGDate class]])
+        {
+            NSString * dateString = [(SWGDate*)_shipDate toString];
+            if(dateString)
+            {
+                dict[@"shipDate"] = dateString;
+            }
+        }
+        else
+        {
+            if(_shipDate != nil)
+            {
+                dict[@"shipDate"] = [(SWGObject*)_shipDate asDictionary];
+            }
+        }
+    }
     
     if(_status != nil)
+    {
         dict[@"status"] = _status;
-    
-    
-    
+    }
     
     if(_complete != nil)
+    {
         dict[@"complete"] = _complete;
-    
-    
-    
+    }
     NSDictionary* output = [dict copy];
     return output;
 }

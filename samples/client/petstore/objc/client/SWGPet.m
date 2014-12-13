@@ -67,67 +67,64 @@
 - (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
-    
     if(_petId != nil)
+    {
         dict[@"id"] = _petId;
-    
-    
-    
-    if(_category != nil){
-        
-        
-        if(_category && [_category isKindOfClass:[SWGDate class]]) {
-            NSString * dateString = [(SWGDate*)_category toString];
-            if(dateString){
-            dict[@"category"] = dateString;
-            }
-        }
-        else {
-            if(_category != nil)
-            dict[@"category"] = [(SWGObject*)_category asDictionary];
-        }
-        
     }
     
-    
+    if(_category != nil)
+    { 
+        if(_category && [_category isKindOfClass:[SWGDate class]])
+        {
+            NSString * dateString = [(SWGDate*)_category toString];
+            if(dateString)
+            {
+                dict[@"category"] = dateString;
+            }
+        }
+        else
+        {
+            if(_category != nil)
+            {
+                dict[@"category"] = [(SWGObject*)_category asDictionary];
+            }
+        }
+    }
     
     if(_name != nil)
+    {
         dict[@"name"] = _name;
+    }
     
-    
-    
-    
-    
-    if(_photoUrls != nil) {
-        if([_photoUrls isKindOfClass:[NSArray class]]) {
+    if(_photoUrls != nil)
+    {
+        if([_photoUrls isKindOfClass:[NSArray class]])
+        {
             dict[@"_photoUrls"] = [[NSArray alloc] initWithArray: (NSArray*) _photoUrls copyItems:true];
         }
-        else if([_photoUrls isKindOfClass:[NSDictionary class]]) {
+        else if([_photoUrls isKindOfClass:[NSDictionary class]])
+        {
             dict[@"photoUrls"] = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)_photoUrls copyItems:true];
         }
     }
     
-    
-    if(_tags != nil){
-        
-        if([_tags isKindOfClass:[NSArray class]]){
+    if(_tags != nil)
+    { 
+        if([_tags isKindOfClass:[NSArray class]])
+        {
         NSMutableArray * array = [[NSMutableArray alloc] init];
-            for( SWGTag *tags in _tags) {
+            for( SWGTag *tags in _tags)
+            {
                 [array addObject:[(SWGObject*)tags asDictionary]];
             }
             dict[@"tags"] = array;
         }
-        
-        
     }
     
-    
-    
     if(_status != nil)
+    {
         dict[@"status"] = _status;
-    
-    
-    
+    }
     NSDictionary* output = [dict copy];
     return output;
 }

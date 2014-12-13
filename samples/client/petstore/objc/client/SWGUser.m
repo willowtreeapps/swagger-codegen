@@ -39,54 +39,45 @@
 - (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
-    
     if(_userId != nil)
+    {
         dict[@"id"] = _userId;
-    
-    
-    
+    }
     
     if(_username != nil)
+    {
         dict[@"username"] = _username;
-    
-    
-    
+    }
     
     if(_firstName != nil)
+    {
         dict[@"firstName"] = _firstName;
-    
-    
-    
+    }
     
     if(_lastName != nil)
+    {
         dict[@"lastName"] = _lastName;
-    
-    
-    
+    }
     
     if(_email != nil)
+    {
         dict[@"email"] = _email;
-    
-    
-    
+    }
     
     if(_password != nil)
+    {
         dict[@"password"] = _password;
-    
-    
-    
+    }
     
     if(_phone != nil)
+    {
         dict[@"phone"] = _phone;
-    
-    
-    
+    }
     
     if(_userStatus != nil)
+    {
         dict[@"userStatus"] = _userStatus;
-    
-    
-    
+    }
     NSDictionary* output = [dict copy];
     return output;
 }
