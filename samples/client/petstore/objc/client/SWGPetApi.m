@@ -50,7 +50,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 }
 
 
--(NSNumber*) updatePetWithCompletionBlock:(SWGPet*) body        
+-(NSNumber*) updatePetWithCompletionBlock:(SWGPet *) body        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -137,7 +137,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) addPetWithCompletionBlock:(SWGPet*) pet        
+-(NSNumber*) addPetWithCompletionBlock:(SWGPet *) pet        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -224,8 +224,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) findPetsByStatusWithCompletionBlock:(NSArray*) status        
-        completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock
+-(NSNumber*) findPetsByStatusWithCompletionBlock:(NSArray *) status        
+        completionHandler: (void (^)(NSArray * output, NSError* error))completionBlock
          {
 
     id m_body = nil;
@@ -290,8 +290,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) findPetsByTagsWithCompletionBlock:(NSArray*) tags        
-        completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock
+-(NSNumber*) findPetsByTagsWithCompletionBlock:(NSArray *) tags        
+        completionHandler: (void (^)(NSArray * output, NSError* error))completionBlock
          {
 
     id m_body = nil;
@@ -356,8 +356,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) getPetByIdWithCompletionBlock:(NSNumber*) petId        
-        completionHandler: (void (^)(SWGPet* output, NSError* error))completionBlock
+-(NSNumber*) getPetByIdWithCompletionBlock:(NSNumber *) petId        
+        completionHandler: (void (^)(SWGPet * output, NSError* error))completionBlock
          {
 
     id m_body = nil;
@@ -415,9 +415,9 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) updatePetWithFormWithCompletionBlock:(NSString*) petId        
-            name:(NSString*) name        
-            status:(NSString*) status        
+-(NSNumber*) updatePetWithFormWithCompletionBlock:(NSString *) petId        
+            name:(NSString *) name        
+            status:(NSString *) status        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -471,8 +471,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) deletePetWithCompletionBlock:(NSString*) api_key        
-            petId:(NSNumber*) petId        
+-(NSNumber*) deletePetWithCompletionBlock:(NSString *) api_key        
+            petId:(NSNumber *) petId        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 

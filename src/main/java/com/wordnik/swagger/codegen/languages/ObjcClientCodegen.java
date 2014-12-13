@@ -11,6 +11,8 @@ public class ObjcClientCodegen extends DefaultCodegen implements CodegenConfig {
   protected Set<String> foundationClasses = new HashSet<String>();
   protected String sourceFolder = "client";
   protected static String PREFIX = "SWG";
+  
+  protected String modelName = "";
 
   public String getName() {
     return "objc";
@@ -122,7 +124,7 @@ public class ObjcClientCodegen extends DefaultCodegen implements CodegenConfig {
     if(languageSpecificPrimitives.contains(name) && !foundationClasses.contains(name))
       return name;
     else
-      return name + "*";
+      return name + " *";
   }
 
   @Override
@@ -145,20 +147,21 @@ public class ObjcClientCodegen extends DefaultCodegen implements CodegenConfig {
     if(languageSpecificPrimitives.contains(swaggerType) && !foundationClasses.contains(swaggerType))
       return toModelName(swaggerType);
     else
-      return swaggerType + "*";
+      return swaggerType + " *";
   }
 
   @Override
   public String toModelName(String type) {
+      modelName = Character.toUpperCase(type.charAt(0)) + type.substring(1);
     if(typeMapping.keySet().contains(type) ||
       foundationClasses.contains(type) ||
       importMapping.values().contains(type) ||
       defaultIncludes.contains(type) ||
       languageSpecificPrimitives.contains(type)) {
-      return Character.toUpperCase(type.charAt(0)) + type.substring(1);
+      return modelName;
     }
     else {
-      return PREFIX + Character.toUpperCase(type.charAt(0)) + type.substring(1);
+      return PREFIX + modelName;
     }
   }
 
@@ -211,6 +214,6 @@ public class ObjcClientCodegen extends DefaultCodegen implements CodegenConfig {
   }
 
   public String escapeReservedWord(String name) {
-    return "_" + name;
+    return Character.toLowerCase(modelName.charAt(0)) + modelName.substring(1) + initialCaps(name);
   }
 }

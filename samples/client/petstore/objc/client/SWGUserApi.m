@@ -50,7 +50,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 }
 
 
--(NSNumber*) createUserWithCompletionBlock:(SWGUser*) body        
+-(NSNumber*) createUserWithCompletionBlock:(SWGUser *) body        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -137,7 +137,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) createUsersWithArrayInputWithCompletionBlock:(NSArray*) body        
+-(NSNumber*) createUsersWithArrayInputWithCompletionBlock:(NSArray *) body        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -224,7 +224,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) createUsersWithListInputWithCompletionBlock:(NSArray*) body        
+-(NSNumber*) createUsersWithListInputWithCompletionBlock:(NSArray *) body        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -311,9 +311,9 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) loginUserWithCompletionBlock:(NSString*) username        
-            password:(NSString*) password        
-        completionHandler: (void (^)(NSString* output, NSError* error))completionBlock
+-(NSNumber*) loginUserWithCompletionBlock:(NSString *) username        
+            password:(NSString *) password        
+        completionHandler: (void (^)(NSString * output, NSError* error))completionBlock
          {
 
     id m_body = nil;
@@ -420,8 +420,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) getUserByNameWithCompletionBlock:(NSString*) username        
-        completionHandler: (void (^)(SWGUser* output, NSError* error))completionBlock
+-(NSNumber*) getUserByNameWithCompletionBlock:(NSString *) username        
+        completionHandler: (void (^)(SWGUser * output, NSError* error))completionBlock
          {
 
     id m_body = nil;
@@ -479,8 +479,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) updateUserWithCompletionBlock:(NSString*) username        
-            body:(SWGUser*) body        
+-(NSNumber*) updateUserWithCompletionBlock:(NSString *) username        
+            body:(SWGUser *) body        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 
@@ -568,7 +568,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) deleteUserWithCompletionBlock:(NSString*) username        
+-(NSNumber*) deleteUserWithCompletionBlock:(NSString *) username        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 

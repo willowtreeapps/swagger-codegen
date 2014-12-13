@@ -3,14 +3,14 @@
 
 @implementation SWGOrder
 
--(id)_id: (NSNumber*) _id
-    petId: (NSNumber*) petId
-    quantity: (NSNumber*) quantity
-    shipDate: (SWGDate*) shipDate
-    status: (NSString*) status
-    complete: (NSNumber*) complete { 
+-(id)orderId: (NSNumber *) orderId
+    petId: (NSNumber *) petId
+    quantity: (NSNumber *) quantity
+    shipDate: (SWGDate *) shipDate
+    status: (NSString *) status
+    complete: (NSNumber *) complete { 
     
-    __id = _id;
+    _orderId = orderId;
     _petId = petId;
     _quantity = quantity;
     _shipDate = shipDate;
@@ -23,7 +23,7 @@
 {
     self = [super init];
     if(self) {
-        __id = dict[@"id"];
+        _orderId = dict[@"id"];
         _petId = dict[@"petId"];
         _quantity = dict[@"quantity"];
         
@@ -42,8 +42,8 @@
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     
-    if(__id != nil)
-        dict[@"id"] = __id;
+    if(_orderId != nil)
+        dict[@"id"] = _orderId;
     
     
     

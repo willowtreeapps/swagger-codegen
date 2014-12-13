@@ -50,8 +50,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 }
 
 
--(NSNumber*) placeOrderWithCompletionBlock:(SWGOrder*) body        
-        completionHandler: (void (^)(SWGOrder* output, NSError* error))completionBlock
+-(NSNumber*) placeOrderWithCompletionBlock:(SWGOrder *) body        
+        completionHandler: (void (^)(SWGOrder * output, NSError* error))completionBlock
          {
 
     id m_body = body;
@@ -142,8 +142,8 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) getOrderByIdWithCompletionBlock:(NSString*) orderId        
-        completionHandler: (void (^)(SWGOrder* output, NSError* error))completionBlock
+-(NSNumber*) getOrderByIdWithCompletionBlock:(NSString *) orderId        
+        completionHandler: (void (^)(SWGOrder * output, NSError* error))completionBlock
          {
 
     id m_body = nil;
@@ -201,7 +201,7 @@ static NSString * basePath = @"http://petstore.swagger.wordnik.com/v2";
 
 }
 
--(NSNumber*) deleteOrderWithCompletionBlock:(NSString*) orderId        
+-(NSNumber*) deleteOrderWithCompletionBlock:(NSString *) orderId        
         
         completionHandler: (void (^)(NSError* error))completionBlock {
 

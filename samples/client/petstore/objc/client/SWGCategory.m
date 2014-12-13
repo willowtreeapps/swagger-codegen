@@ -3,10 +3,10 @@
 
 @implementation SWGCategory
 
--(id)_id: (NSNumber*) _id
-    name: (NSString*) name { 
+-(id)categoryId: (NSNumber *) categoryId
+    name: (NSString *) name { 
     
-    __id = _id;
+    _categoryId = categoryId;
     _name = name;
     
     return self;
@@ -15,7 +15,7 @@
 {
     self = [super init];
     if(self) {
-        __id = dict[@"id"];
+        _categoryId = dict[@"id"];
         _name = dict[@"name"];
         
     }
@@ -26,8 +26,8 @@
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
     
-    if(__id != nil)
-        dict[@"id"] = __id;
+    if(_categoryId != nil)
+        dict[@"id"] = _categoryId;
     
     
     
