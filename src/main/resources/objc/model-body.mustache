@@ -57,47 +57,50 @@
 }
 
 - (NSDictionary *)asDictionary {
-    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-    {{#vars}}{{#complexType}}
-    if(_{{name}} != nil){
-        {{#isContainer}}
-        if([_{{name}} isKindOfClass:[NSArray class]]){
+    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];{{#vars}}
+    {{#complexType}}
+    if(_{{name}} != nil)
+    { {{#isContainer}}
+        if([_{{name}} isKindOfClass:[NSArray class]])
+        {
         NSMutableArray * array = [[NSMutableArray alloc] init];
-            for( {{complexType}} *{{name}} in _{{name}}) {
+            for( {{complexType}} *{{name}} in _{{name}})
+            {
                 [array addObject:[(SWGObject*){{name}} asDictionary]];
             }
             dict[@"{{name}}"] = array;
-        }
-        {{/isContainer}}
-        {{^isContainer}}
-        if(_{{name}} && [_{{name}} isKindOfClass:[SWGDate class]]) {
+        }{{/isContainer}}{{^isContainer}}
+        if(_{{name}} && [_{{name}} isKindOfClass:[SWGDate class]])
+        {
             NSString * dateString = [(SWGDate*)_{{name}} toString];
-            if(dateString){
-            dict[@"{{name}}"] = dateString;
+            if(dateString)
+            {
+                dict[@"{{name}}"] = dateString;
             }
         }
-        else {
+        else
+        {
             if(_{{name}} != nil)
-            dict[@"{{baseName}}"] = [(SWGObject*)_{{name}} asDictionary];
-        }
-        {{/isContainer}}
-    }
-    {{/complexType}}
-    {{#isPrimitiveType}}{{#isNotContainer}}
+            {
+                dict[@"{{baseName}}"] = [(SWGObject*)_{{name}} asDictionary];
+            }
+        }{{/isContainer}}
+    }{{/complexType}}{{#isPrimitiveType}}{{#isNotContainer}}
     if(_{{name}} != nil)
+    {
         dict[@"{{baseName}}"] = _{{name}};
-    {{/isNotContainer}}
-    {{#isContainer}}
-    if(_{{name}} != nil) {
-        if([_{{name}} isKindOfClass:[NSArray class]]) {
+    }{{/isNotContainer}}{{#isContainer}}
+    if(_{{name}} != nil)
+    {
+        if([_{{name}} isKindOfClass:[NSArray class]])
+        {
             dict[@"_{{name}}"] = [[NSArray alloc] initWithArray: (NSArray*) _{{name}} copyItems:true];
         }
-        else if([_{{name}} isKindOfClass:[NSDictionary class]]) {
+        else if([_{{name}} isKindOfClass:[NSDictionary class]])
+        {
             dict[@"{{name}}"] = [[NSDictionary alloc] initWithDictionary:(NSDictionary*)_{{name}} copyItems:true];
         }
-    }
-    {{/isContainer}}
-    {{/isPrimitiveType}}{{/vars}}
+    }{{/isContainer}}{{/isPrimitiveType}}{{/vars}}
     NSDictionary* output = [dict copy];
     return output;
 }

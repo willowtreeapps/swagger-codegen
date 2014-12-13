@@ -27,18 +27,15 @@
 - (NSDictionary *)asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     
-    
     if(_tagId != nil)
+    {
         dict[@"id"] = _tagId;
-    
-    
-    
+    }
     
     if(_name != nil)
+    {
         dict[@"name"] = _name;
-    
-    
-    
+    }
     NSDictionary* output = [dict copy];
     return output;
 }
