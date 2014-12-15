@@ -36,7 +36,6 @@ public class Codegen extends DefaultGenerator {
             .withDescription("additional launguage-sepecific properties")
             .create("P"));
 
-
     ClientOptInput clientOptInput = new ClientOptInput();
     ClientOpts clientOpts = new ClientOpts();
     Swagger swagger = null;
