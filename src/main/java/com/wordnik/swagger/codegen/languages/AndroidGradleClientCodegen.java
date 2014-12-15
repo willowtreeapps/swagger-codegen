@@ -15,11 +15,11 @@ import java.util.HashSet;
 /**
  * Created by christhoma on 12/13/14.
  */
-public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements CodegenConfig {
+public class AndroidGradleClientCodegen extends DefaultCodegen implements CodegenConfig {
     protected String basePackage = "";
 
 
-    public MonkeypodAndroidClientCodegen() {
+    public AndroidGradleClientCodegen() {
         super();
         outputFolder = (String) additionalProperties.get("output-folder");
         modelTemplateFiles.put("model.mustache", ".java");
@@ -47,7 +47,7 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
     @Override
     public void processOpts() {
         super.processOpts();
-        if(additionalProperties.containsKey("package")) {
+        if (additionalProperties.containsKey("package")) {
             setPackage((String) additionalProperties.get("package"));
         }
     }
@@ -102,11 +102,11 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
 
     @Override
     public String getName() {
-        return "android-monkeypod";
+        return "gradle-android";
     }
 
     @Override
     public String getHelp() {
-        return "Generates android code to interface with a monkeypod api.";
+        return "Generates android code for use with a gradle plugin";
     }
 }
