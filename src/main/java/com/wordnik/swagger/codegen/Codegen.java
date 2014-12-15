@@ -30,7 +30,12 @@ public class Codegen extends DefaultGenerator {
     options.addOption("o", "output", true, "where to write the generated files");
     options.addOption("i", "input-spec", true, "location of the swagger spec, as URL or file");
     options.addOption("t", "template-dir", true, "folder containing the template files");
-    options.addOption("p", "package-name", true, "package name for the project");
+    options.addOption(OptionBuilder.withArgName("property=value")
+            .hasArgs(2)
+            .withValueSeparator()
+            .withDescription("additional launguage-sepecific properties")
+            .create("P"));
+
 
     ClientOptInput clientOptInput = new ClientOptInput();
     ClientOpts clientOpts = new ClientOpts();
@@ -41,12 +46,12 @@ public class Codegen extends DefaultGenerator {
       CommandLineParser parser = new BasicParser();
 
       cmd = parser.parse(options, args);
-      if (cmd.hasOption("p")) {
-        CodegenConfig config = getConfig(String.valueOf(cmd.getOptionValue("l")), configs);
-        if (config != null) {
-          clientOptInput.getConfig().setPackages(cmd.getOptionValue("package", cmd.getOptionValue("p")));
-        }
+
+      Properties properties = cmd.getOptionProperties("P");
+      for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+        clientOpts.getProperties().put(entry.getKey().toString(), entry.getValue().toString());
       }
+
       if (cmd.hasOption("l"))
         clientOptInput.setConfig(getConfig(cmd.getOptionValue("l"), configs));
       if (cmd.hasOption("o"))
@@ -73,7 +78,8 @@ public class Codegen extends DefaultGenerator {
     }
     catch (Exception e) {
       usage(options);
-      return;
+      throw new RuntimeException(e);
+//      return;
     }
     try{
       clientOptInput

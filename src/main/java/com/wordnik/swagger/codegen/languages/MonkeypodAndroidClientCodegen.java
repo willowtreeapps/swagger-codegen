@@ -18,7 +18,7 @@ import java.util.HashSet;
 public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements CodegenConfig {
 
     protected String sourceFolder = "src/main/java";
-    protected String packageName = "";
+    protected String basePackage = "";
 
 
     public MonkeypodAndroidClientCodegen() {
@@ -43,6 +43,20 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
     }
 
     @Override
+    public void processOpts() {
+        super.processOpts();
+        if(additionalProperties.containsKey("package")) {
+            setPackage((String) additionalProperties.get("package"));
+        }
+    }
+
+    public void setPackage(String basePackage) {
+        this.basePackage = basePackage;
+        apiPackage = basePackage + ".api";
+        modelPackage = basePackage + ".model";
+    }
+
+    @Override
     public String escapeReservedWord(String name) {
         return "_" + name;
     }
@@ -58,12 +72,11 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
 
     @Override
     public String getTypeDeclaration(Property p) {
-        if(p instanceof ArrayProperty) {
+        if (p instanceof ArrayProperty) {
             ArrayProperty ap = (ArrayProperty) p;
             Property inner = ap.getItems();
             return getSwaggerType(p) + "<" + getTypeDeclaration(inner) + ">";
-        }
-        else if (p instanceof MapProperty) {
+        } else if (p instanceof MapProperty) {
             MapProperty mp = (MapProperty) p;
             Property inner = mp.getAdditionalProperties();
 
@@ -76,12 +89,11 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
     public String getSwaggerType(Property p) {
         String swaggerType = super.getSwaggerType(p);
         String type = null;
-        if(typeMapping.containsKey(swaggerType)) {
+        if (typeMapping.containsKey(swaggerType)) {
             type = typeMapping.get(swaggerType);
-            if(languageSpecificPrimitives.contains(type))
+            if (languageSpecificPrimitives.contains(type))
                 return toModelName(type);
-        }
-        else
+        } else
             type = swaggerType;
         return toModelName(type);
     }

@@ -7,11 +7,11 @@ import java.util.*;
 import java.io.File;
 
 public class JavaClientCodegen extends DefaultCodegen implements CodegenConfig {
-  protected String invokerPackage = "com.wordnik.client";
   protected String groupId = "com.wordnik";
   protected String artifactId = "swagger-client";
   protected String artifactVersion = "1.0.0";
   protected String sourceFolder = "src/main/java";
+  protected String basePackage = "com.wordnik.client";
 
   public String getName() {
     return "java";
@@ -27,32 +27,32 @@ public class JavaClientCodegen extends DefaultCodegen implements CodegenConfig {
     modelTemplateFiles.put("model.mustache", ".java");
     apiTemplateFiles.put("api.mustache", ".java");
     templateDir = "Java";
-    apiPackage = "com.wordnik.client.api";
-    modelPackage = "com.wordnik.client.model";
+
+    setPackage(basePackage);
 
     reservedWords = new HashSet<String> (
       Arrays.asList(
-        "abstract", "continue", "for", "new", "switch", "assert", 
-        "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", 
-        "this", "break", "double", "implements", "protected", "throw", "byte", "else", 
-        "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", 
-        "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", 
-        "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", 
+        "abstract", "continue", "for", "new", "switch", "assert",
+        "default", "if", "package", "synchronized", "boolean", "do", "goto", "private",
+        "this", "break", "double", "implements", "protected", "throw", "byte", "else",
+        "import", "public", "throws", "case", "enum", "instanceof", "return", "transient",
+        "catch", "extends", "int", "short", "try", "char", "final", "interface", "static",
+        "void", "class", "finally", "long", "strictfp", "volatile", "const", "float",
         "native", "super", "while")
     );
 
-    additionalProperties.put("invokerPackage", invokerPackage);
+    additionalProperties.put("invokerPackage", basePackage);
     additionalProperties.put("groupId", groupId);
     additionalProperties.put("artifactId", artifactId);
     additionalProperties.put("artifactVersion", artifactVersion);
 
     supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
-    supportingFiles.add(new SupportingFile("apiInvoker.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "ApiInvoker.java"));
-    supportingFiles.add(new SupportingFile("JsonUtil.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "JsonUtil.java"));
-    supportingFiles.add(new SupportingFile("apiException.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "ApiException.java"));
+    supportingFiles.add(new SupportingFile("apiInvoker.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "ApiInvoker.java"));
+    supportingFiles.add(new SupportingFile("JsonUtil.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "JsonUtil.java"));
+    supportingFiles.add(new SupportingFile("apiException.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "ApiException.java"));
 
     languageSpecificPrimitives = new HashSet<String>(
       Arrays.asList(
@@ -67,6 +67,20 @@ public class JavaClientCodegen extends DefaultCodegen implements CodegenConfig {
       );
     instantiationTypes.put("array", "ArrayList");
     instantiationTypes.put("map", "HashMap");
+  }
+
+  @Override
+  public void processOpts() {
+    super.processOpts();
+    if(additionalProperties.containsKey("package")) {
+      setPackage((String) additionalProperties.get("package"));
+    }
+  }
+
+  public void setPackage(String basePackage) {
+    this.basePackage = basePackage;
+    apiPackage = basePackage + ".api";
+    modelPackage = basePackage + ".model";
   }
 
   @Override

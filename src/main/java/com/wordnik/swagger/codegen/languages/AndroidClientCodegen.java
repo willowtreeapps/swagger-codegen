@@ -7,7 +7,7 @@ import java.util.*;
 import java.io.File;
 
 public class AndroidClientCodegen extends DefaultCodegen implements CodegenConfig {
-  protected String invokerPackage = "com.wordnik.client";
+  protected String basePackage = "com.wordnik.client";
   protected String groupId = "com.wordnik";
   protected String artifactId = "swagger-client";
   protected String artifactVersion = "1.0.0";
@@ -27,23 +27,23 @@ public class AndroidClientCodegen extends DefaultCodegen implements CodegenConfi
     modelTemplateFiles.put("model.mustache", ".java");
     apiTemplateFiles.put("api.mustache", ".java");
     templateDir = "android-java";
-    apiPackage = "com.wordnik.client.api";
-    modelPackage = "com.wordnik.client.model";
 
-    additionalProperties.put("invokerPackage", invokerPackage);
+    setPackage(basePackage);
+
+    additionalProperties.put("invokerPackage", basePackage);
     additionalProperties.put("groupId", groupId);
     additionalProperties.put("artifactId", artifactId);
     additionalProperties.put("artifactVersion", artifactVersion);
 
     supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
-    supportingFiles.add(new SupportingFile("apiInvoker.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "ApiInvoker.java"));
-    supportingFiles.add(new SupportingFile("httpPatch.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "HttpPatch.java"));
-    supportingFiles.add(new SupportingFile("jsonUtil.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "JsonUtil.java"));
-    supportingFiles.add(new SupportingFile("apiException.mustache", 
-      (sourceFolder + File.separator + invokerPackage).replace(".", java.io.File.separator), "ApiException.java"));
+    supportingFiles.add(new SupportingFile("apiInvoker.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "ApiInvoker.java"));
+    supportingFiles.add(new SupportingFile("httpPatch.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "HttpPatch.java"));
+    supportingFiles.add(new SupportingFile("jsonUtil.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "JsonUtil.java"));
+    supportingFiles.add(new SupportingFile("apiException.mustache",
+      (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "ApiException.java"));
 
     languageSpecificPrimitives = new HashSet<String>(
       Arrays.asList(
@@ -58,6 +58,20 @@ public class AndroidClientCodegen extends DefaultCodegen implements CodegenConfi
       );
     instantiationTypes.put("array", "ArrayList");
     instantiationTypes.put("map", "HashMap");
+  }
+
+  @Override
+  public void processOpts() {
+    super.processOpts();
+    if(additionalProperties.containsKey("package")) {
+      setPackage((String) additionalProperties.get("package"));
+    }
+  }
+
+  public void setPackage(String basePackage) {
+    this.basePackage = basePackage;
+    apiPackage = basePackage + ".api";
+    modelPackage = basePackage + ".model";
   }
 
   @Override
