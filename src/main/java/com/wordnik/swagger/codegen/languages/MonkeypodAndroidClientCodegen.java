@@ -26,6 +26,10 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
         outputFolder = (String) additionalProperties.get("output-folder");
         modelTemplateFiles.put("model.mustache", ".java");
         apiTemplateFiles.put("api.mustache", ".java");
+        templateDir = "android-java";
+        basePackage = (String) additionalProperties.get("package");
+        modelPackage = basePackage + ".model";
+        apiPackage = basePackage + ".client";
 
         languageSpecificPrimitives = new HashSet<String>(
                 Arrays.asList(

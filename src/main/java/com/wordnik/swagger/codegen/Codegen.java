@@ -46,11 +46,6 @@ public class Codegen extends DefaultGenerator {
 
       cmd = parser.parse(options, args);
 
-      Properties properties = cmd.getOptionProperties("P");
-      for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-        clientOpts.getProperties().put(entry.getKey().toString(), entry.getValue().toString());
-      }
-
       if (cmd.hasOption("l"))
         clientOptInput.setConfig(getConfig(cmd.getOptionValue("l"), configs));
       if (cmd.hasOption("o"))
