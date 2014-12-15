@@ -16,8 +16,6 @@ import java.util.HashSet;
  * Created by christhoma on 12/13/14.
  */
 public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements CodegenConfig {
-
-    protected String sourceFolder = "src/main/java";
     protected String basePackage = "";
 
 
@@ -67,11 +65,11 @@ public class MonkeypodAndroidClientCodegen extends DefaultCodegen implements Cod
 
     @Override
     public String apiFileFolder() {
-        return outputFolder + File.separator + sourceFolder + File.separator + apiPackage().replaceAll("\\.", File.separator);
+        return outputFolder + File.separator + apiPackage().replaceAll("\\.", File.separator);
     }
 
     public String modelFileFolder() {
-        return outputFolder + File.separator + sourceFolder + File.separator + modelPackage().replaceAll("\\.", File.separator);
+        return outputFolder + File.separator + modelPackage().replaceAll("\\.", File.separator);
     }
 
     @Override
