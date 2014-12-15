@@ -1,47 +1,77 @@
-package {{package}};
+package {{package}}.model;
 
+import {{package}}.Objects;
+import android.os.Parcelable;
+import android.os.Parcel;
 {{#imports}}import {{import}};
 {{/imports}}
 
-import com.wordnik.swagger.annotations.*;
 {{#models}}
 
 {{#model}}{{#description}}
 /**
  * {{description}}
  **/{{/description}}
-@ApiModel(description = "{{{description}}}")
-public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} { {{#vars}}
-  private {{{datatype}}} {{name}} = {{{defaultValue}}};{{#allowableValues}}
-  
-  //{{^min}}public enum {{name}}Enum { {{#values}} {{.}}, {{/values}} }; 
-  {{/min}}{{/allowableValues}}{{/vars}}
-  
-  {{#vars}}
-  /**{{#description}}
-   * {{{description}}}{{/description}}{{#minimum}}
-   * minimum: {{minimum}}{{/minimum}}{{#maximum}}
-   * maximum: {{maximum}}{{/maximum}}
-   **/
-  @ApiModelProperty(required = {{required}}, value = "{{{description}}}")
-  public {{{datatype}}} {{getter}}() {
-    return {{name}};
-  }
-  public void {{setter}}({{{datatype}}} {{name}}) {
-    this.{{name}} = {{name}};
-  }
+public class {{classname}} {{#parent}} extends {{{parent}}}{{/parent}} implements Parcelable { {{#vars}}
+    /**{{#description}}
+     * {{{description}}}{{/description}}{{#minimum}}
+     * minimum: {{minimum}}{{/minimum}}{{#maximum}}
+     * maximum: {{maximum}}{{/maximum}}
+     **/
+    public {{{datatype}}} {{name}} = {{{defaultValue}}};{{#allowableValues}}
 
-  {{/vars}}
+    //{{^min}}public enum {{name}}Enum { {{#values}} {{.}}, {{/values}} };
+    {{/min}}{{/allowableValues}}{{/vars}}
 
-  @Override
-  public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class {{classname}} {\n");
-    {{#parent}}sb.append("  " + super.toString()).append("\n");{{/parent}}
-    {{#vars}}sb.append("  {{name}}: ").append({{name}}).append("\n");
-    {{/vars}}sb.append("}\n");
-    return sb.toString();
-  }
+    @Override
+    public String toString()  {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class {{classname}} {\n");
+        {{#parent}}sb.append("  " + super.toString()).append("\n");{{/parent}}
+        {{#vars}}sb.append("  {{name}}: ").append({{name}}).append("\n");
+        {{/vars}}sb.append("}\n");
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null || !getClass().equals(other.getClass())) {
+            return false;
+        }
+        {{classname}} e = ({{classname}}) other;
+        return {{#vars}}Objects.equals({{name}}, e.{{name}}){{#hasMore}} && {{/hasMore}}{{/vars}};
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash({{#vars}}{{name}}{{#hasMore}}, {{/hasMore}}{{/vars}});
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        {{#vars}}dest.{{serializeMethod}};
+        {{/vars}}
+    }
+
+    private {{classname}}(Parcel in) {
+        {{#vars}}{{deserializeMethod}};
+        {{/vars}}
+    }
+
+    public static final Creator<{{classname}}> CREATOR = new Creator<{{classname}}>() {
+        public {{classname}} createFromParcel(Parcel source) {
+            return new {{classname}}(source);
+        }
+
+        public {{classname}}[] newArray(int size) {
+            return new {{classname}}[size];
+        }
+    };
 }
 {{/model}}
 {{/models}}

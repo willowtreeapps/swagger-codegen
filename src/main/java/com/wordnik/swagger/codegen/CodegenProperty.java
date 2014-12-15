@@ -21,4 +21,7 @@ public class CodegenProperty {
   public boolean isEnum;
   public List<String> _enum;
   public Map<String, Object> allowableValues;
+
+  public String serializeMethod;
+  public String deserializeMethod;
 }
