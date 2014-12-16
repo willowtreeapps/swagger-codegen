@@ -102,14 +102,30 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
         if (p instanceof ArrayProperty) {
             ArrayProperty ap = (ArrayProperty) p;
             Property inner = ap.getItems();
-            return getSwaggerType(p) + "<" + getTypeDeclaration(inner) + ">";
+            return getSwaggerType(p) + "<" + getBoxedTypeDeclaration(inner) + ">";
         } else if (p instanceof MapProperty) {
             MapProperty mp = (MapProperty) p;
             Property inner = mp.getAdditionalProperties();
 
-            return getSwaggerType(p) + "<String, " + getTypeDeclaration(inner) + ">";
+            return getSwaggerType(p) + "<String, " + getBoxedTypeDeclaration(inner) + ">";
         }
         return super.getTypeDeclaration(p);
+    }
+
+    public String getBoxedTypeDeclaration(Property p) {
+        if (p instanceof BooleanProperty) {
+            return "Boolean";
+        } else if (p instanceof IntegerProperty) {
+            return "Integer";
+        } else if (p instanceof LongProperty) {
+            return "Long";
+        } else if (p instanceof FloatProperty) {
+            return "Float";
+        } else if (p instanceof DoubleProperty) {
+            return "Double";
+        } else {
+            return getTypeDeclaration(p);
+        }
     }
 
     @Override
@@ -142,12 +158,20 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
             return "writeLong(" + name + ".getTime())";
         } else if (p instanceof ArrayProperty) {
             ArrayProperty ap = (ArrayProperty) p;
-            String inner = getSwaggerType(ap.getItems());
-            if (inner.equals("String")) {
+            Property inner = ap.getItems();
+            if (inner instanceof StringProperty) {
                 return "writeStringList(" + name + ")";
+            } else if (inner instanceof BooleanProperty
+                    || inner instanceof IntegerProperty
+                    || inner instanceof LongProperty
+                    || inner instanceof FloatProperty
+                    || inner instanceof DoubleProperty) {
+                return "writeList(" + name + ")";
             } else {
                 return "writeTypedList(" + name + ")";
             }
+        } else if (p instanceof MapProperty) {
+            return "writeMap(" + name + ")";
         } else {
             return "writeParcelable(" + name + ", flags)";
         }
@@ -170,14 +194,24 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
             return name + " = new Date(in.readLong())";
         } else if (p instanceof ArrayProperty) {
             ArrayProperty ap = (ArrayProperty) p;
-            String inner = getSwaggerType(ap.getItems());
-            if (inner.equals("String")) {
+            Property inner = ap.getItems();
+            if (inner instanceof StringProperty) {
                 return "in.readStringList(" + name + ")";
+            } else if (inner instanceof BooleanProperty
+                    || inner instanceof IntegerProperty
+                    || inner instanceof LongProperty
+                    || inner instanceof FloatProperty
+                    || inner instanceof DoubleProperty) {
+                return name + " = in.readArrayList(List.class.getClassLoader())";
             } else {
-                return "in.readTypedList(" + name + ", " + inner + ".CREATOR)";
+                String innerType = getSwaggerType(inner);
+                return "in.readTypedList(" + name + ", " + innerType + ".CREATOR)";
             }
+        } else if (p instanceof MapProperty) {
+            return name + " = in.readHashMap(Map.class.getClassLoader())";
         } else {
-            return name + " = in.readParcelable(getClass().getClassLoader())";
+            String type = getSwaggerType(p);
+            return name + " = in.readParcelable(" + type + ".class.getClassLoader())";
         }
     }
 
