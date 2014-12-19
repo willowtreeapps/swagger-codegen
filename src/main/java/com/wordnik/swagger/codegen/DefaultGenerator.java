@@ -1,5 +1,6 @@
 package com.wordnik.swagger.codegen;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import com.wordnik.swagger.models.*;
 import com.wordnik.swagger.models.properties.*;
 import com.wordnik.swagger.util.*;
@@ -8,6 +9,7 @@ import com.wordnik.swagger.codegen.languages.*;
 import com.samskivert.mustache.*;
 
 import org.apache.commons.io.FileUtils;
+import org.omg.IOP.CodecOperations;
 
 import java.util.*;
 import java.io.*;
@@ -105,36 +107,20 @@ public class DefaultGenerator implements Generator {
 
       // apis
       Map<String, List<CodegenOperation>> paths = processPaths(swagger.getPaths());
-      for(String tag : paths.keySet()) {
-        List<CodegenOperation> ops = paths.get(tag);
-        Map<String, Object> operation = processOperations(config, tag, ops);
-        operation.put("basePath", basePath);
-        operation.put("baseName", tag);
-        operation.put("modelPackage", config.modelPackage());
-        operation.putAll(config.additionalProperties());
-        operation.put("classname", config.toApiName(tag));
-        allOperations.add(operation);
-        for(String templateName : config.apiTemplateFiles().keySet()) {
-          String suffix = config.apiTemplateFiles().get(templateName);
-          String filename = config.apiFileFolder() +
-            File.separator +
-            config.toApiFilename(tag) +
-            suffix;
 
-          String template = readTemplate(config.templateDir() + File.separator + templateName);
-          Template tmpl = Mustache.compiler()
-            .withLoader(new Mustache.TemplateLoader() {
-              public Reader getTemplate (String name) {
-                return getTemplateReader(config.templateDir() + File.separator + name + ".mustache");
-              };
-            })
-            .defaultValue("")
-            .escapeHTML(false)
-            .compile(template);
-
-          writeToFile(filename, tmpl.execute(operation));
+      if (config.splitApi()) {
+        for(String tag : paths.keySet()) {
+          List<CodegenOperation> ops = paths.get(tag);
+          allOperations.add(processOps(ops, tag, basePath));
         }
+      } else {
+        List<CodegenOperation> ops = new ArrayList<CodegenOperation>();
+        for (String tag : paths.keySet()) {
+          ops.addAll(paths.get(tag));
+        }
+        allOperations.add(processOps(ops, null, basePath));
       }
+
       if(System.getProperty("debugOperations") != null) {
         System.out.println("############ Operation info ############");
         Json.prettyPrint(allOperations);
@@ -206,6 +192,36 @@ public class DefaultGenerator implements Generator {
     catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private Map<String, Object> processOps(List<CodegenOperation> ops, String tag, String basePath) throws IOException {
+    Map<String, Object> operation = processOperations(config, tag, ops);
+    operation.put("basePath", basePath);
+    operation.put("baseName", tag);
+    operation.put("modelPackage", config.modelPackage());
+    operation.putAll(config.additionalProperties());
+    operation.put("classname", config.toApiName(tag));
+    for(String templateName : config.apiTemplateFiles().keySet()) {
+      String suffix = config.apiTemplateFiles().get(templateName);
+      String filename = config.apiFileFolder() +
+              File.separator +
+              config.toApiFilename(tag) +
+              suffix;
+
+      String template = readTemplate(config.templateDir() + File.separator + templateName);
+      Template tmpl = Mustache.compiler()
+              .withLoader(new Mustache.TemplateLoader() {
+                public Reader getTemplate (String name) {
+                  return getTemplateReader(config.templateDir() + File.separator + name + ".mustache");
+                };
+              })
+              .defaultValue("")
+              .escapeHTML(false)
+              .compile(template);
+
+      writeToFile(filename, tmpl.execute(operation));
+    }
+    return operation;
   }
 
   public Map<String, List<CodegenOperation>> processPaths(Map<String, Path> paths) {

@@ -26,7 +26,7 @@ public class {{classname}}Proxy {
 {{#operations}}
 {{#operation}}
     public void {{operationId}}({{#allParams}}{{dataType}} {{paramName}}{{^-last}}, {{/-last}}{{/allParams}}) {
-        startService(newIntent({{classname}}Service.{{operationIdConst}}){{^allparams}});{{/allparams}}
+        startService(newIntent({{classname}}Service.{{operationIdConst}}){{^allParams}});{{/allParams}}
 {{#allParams}}
             .{{#deserializeMethodName}}{{classname}}Service.ARG_{{-index}}{{/deserializeMethodName}}{{#-last}});{{/-last}}
 {{/allParams}}

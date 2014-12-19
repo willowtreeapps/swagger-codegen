@@ -22,6 +22,7 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
 
     public AndroidGradleClientCodegen() {
         super();
+        splitApi = false;
         outputFolder = (String) additionalProperties.get("output-folder");
         modelTemplateFiles.put("model.mustache", ".java");
         apiTemplateFiles.put("intentService.mustache", "Service.java");
@@ -391,3 +392,4 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
         return "Generates android code for use with a gradle plugin";
     }
 }
+
