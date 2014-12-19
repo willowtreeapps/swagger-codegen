@@ -1,5 +1,6 @@
 package com.wordnik.swagger.codegen;
 
+import com.google.common.base.CaseFormat;
 import com.wordnik.swagger.models.*;
 import com.wordnik.swagger.models.parameters.*;
 import com.wordnik.swagger.models.properties.*;
@@ -686,6 +687,8 @@ public class DefaultCodegen {
     op.headerParams = addHasMore(headerParams);
     // op.cookieParams = cookieParams;
     op.formParams = addHasMore(formParams);
+    op.operationIdConst = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, op.operationId);
+    op.operationIdCapital = StringUtils.capitalize(op.operationId);
     // legacy support
     op.nickname = operationId;
 
@@ -778,6 +781,7 @@ public class DefaultCodegen {
         }
         imports.add(cp.baseType);
         p.dataType = cp.datatype;
+        p.baseType = cp.baseType;
         p.isContainer = true;
       }
       else{

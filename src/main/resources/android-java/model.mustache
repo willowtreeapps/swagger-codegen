@@ -54,12 +54,12 @@ public class {{classname}} {{#parent}} extends {{{parent}}}{{/parent}} implement
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        {{#vars}}dest.{{serializeMethod}};
+        {{#vars}}dest.{{#serializeMethod}}{{name}}{{/serializeMethod}};
         {{/vars}}
     }
 
     private {{classname}}(Parcel in) {
-        {{#vars}}{{deserializeMethod}};
+        {{#vars}}{{#deserializeMethod}}{{name}}{{/deserializeMethod}};
         {{/vars}}
     }
 

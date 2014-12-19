@@ -10,4 +10,8 @@ public class CodegenParameter {
    * MAY be included and its default value is false.
    */
   public Boolean required;
+
+  public String serializeMethod;
+  public String deserializeMethodName;
+  public String defaultValue;
 }

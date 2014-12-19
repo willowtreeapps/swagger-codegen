@@ -1,5 +1,7 @@
 package com.wordnik.swagger.codegen;
 
+import com.samskivert.mustache.Mustache;
+
 import java.util.*;
 
 public class CodegenProperty {
@@ -22,6 +24,6 @@ public class CodegenProperty {
   public List<String> _enum;
   public Map<String, Object> allowableValues;
 
-  public String serializeMethod;
-  public String deserializeMethod;
+  public Mustache.Lambda serializeMethod;
+  public Mustache.Lambda deserializeMethod;
 }

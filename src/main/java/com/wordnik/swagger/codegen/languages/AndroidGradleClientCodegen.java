@@ -1,9 +1,16 @@
 package com.wordnik.swagger.codegen.languages;
 
+import com.samskivert.mustache.Mustache;
+import com.samskivert.mustache.Template;
 import com.wordnik.swagger.codegen.*;
+import com.wordnik.swagger.models.Operation;
+import com.wordnik.swagger.models.parameters.Parameter;
 import com.wordnik.swagger.models.properties.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.sql.ParameterMetaData;
 import java.util.*;
 
 /**
@@ -16,7 +23,8 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
         super();
         outputFolder = (String) additionalProperties.get("output-folder");
         modelTemplateFiles.put("model.mustache", ".java");
-//        apiTemplateFiles.put("api.mustache", ".java");
+        apiTemplateFiles.put("intentService.mustache", "Service.java");
+        apiTemplateFiles.put("intentServiceProxy.mustache", "Proxy.java");
         templateDir = "android-java";
         basePackage = (String) additionalProperties.get("package");
         modelPackage = basePackage + ".model";
@@ -51,6 +59,12 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
         }
         supportingFiles.add(new SupportingFile("objects.mustache",
                 basePackage.replace(".", java.io.File.separator), "Objects.java"));
+        supportingFiles.add(new SupportingFile("apiBroadcastReceiver.mustache",
+                basePackage.replace(".", File.separator), "ApiBroadcastReceiver.java"));
+        supportingFiles.add(new SupportingFile("apiBroadcastReceiverVoid.mustache",
+                basePackage.replace(".", File.separator), "ApiBroadcastReceiverVoid.java"));
+        supportingFiles.add(new SupportingFile("apiBroadcastReceiverList.mustache",
+                basePackage.replace(".", File.separator), "ApiBroadcastReceiverList.java"));
     }
 
     public void setPackage(String basePackage) {
@@ -92,9 +106,24 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
     @Override
     public CodegenProperty fromProperty(String name, Property p) {
         CodegenProperty property = super.fromProperty(name, p);
-        property.serializeMethod = getSerializeMethod(property.name, p);
+        property.serializeMethod = getSerializeMethod(p);
         property.deserializeMethod = getDeserializeMethod(property.name, p);
         return property;
+    }
+
+    @Override
+    public CodegenParameter fromParameter(Parameter param, Set<String> imports) {
+        CodegenParameter parameter = super.fromParameter(param, imports);
+        parameter.serializeMethod = getSerializeMethod(parameter);
+        parameter.deserializeMethodName = getDeserializeMethod(parameter);
+        return parameter;
+    }
+
+    @Override
+    public CodegenOperation fromOperation(String path, String httpMethod, Operation operation) {
+        CodegenOperation op = super.fromOperation(path, httpMethod, operation);
+        op.serializeMethod = getSerializeMethod(op);
+        return op;
     }
 
     @Override
@@ -141,40 +170,69 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
         return toModelName(type);
     }
 
-    public String getSerializeMethod(String name, Property p) {
-        if (p instanceof StringProperty) {
-            return "writeString(" + name + ")";
-        } else if (p instanceof BooleanProperty) {
-            return "writeByte((byte)(" + name + "?1:0))";
-        } else if (p instanceof IntegerProperty) {
-            return "writeInt(" + name + ")";
-        } else if (p instanceof LongProperty) {
-            return "writeLong(" + name + ")";
-        } else if (p instanceof FloatProperty) {
-            return "writeFloat(" + name + ")";
-        } else if (p instanceof DoubleProperty) {
-            return "writeDouble(" + name + ")";
-        } else if (p instanceof DateProperty || p instanceof DateTimeProperty) {
-            return "writeLong(" + name + ".getTime())";
-        } else if (p instanceof ArrayProperty) {
-            ArrayProperty ap = (ArrayProperty) p;
-            Property inner = ap.getItems();
-            if (inner instanceof StringProperty) {
-                return "writeStringList(" + name + ")";
-            } else if (inner instanceof BooleanProperty
-                    || inner instanceof IntegerProperty
-                    || inner instanceof LongProperty
-                    || inner instanceof FloatProperty
-                    || inner instanceof DoubleProperty) {
-                return "writeList(" + name + ")";
-            } else {
-                return "writeTypedList(" + name + ")";
+    public Mustache.Lambda getSerializeMethod(final Property p) {
+        return new Mustache.Lambda() {
+            @Override
+            public void execute(Template.Fragment fragment, Writer writer) throws IOException {
+                if (p instanceof StringProperty) {
+                    writer.write("writeString(");
+                    fragment.execute(writer);
+                    writer.write(")");
+                } else if (p instanceof BooleanProperty) {
+                    writer.write("writeByte((byte)(");
+                    fragment.execute(writer);
+                    writer.write("?1:0))");
+                } else if (p instanceof IntegerProperty) {
+                    writer.write("writeInt(");
+                    fragment.execute(writer);
+                    writer.write(")");
+                } else if (p instanceof LongProperty) {
+                    writer.write("writeLong(");
+                    fragment.execute(writer);
+                    writer.write(")");
+                } else if (p instanceof FloatProperty) {
+                    writer.write("writeFloat(");
+                    fragment.execute(writer);
+                    writer.write(")");
+                } else if (p instanceof DoubleProperty) {
+                    writer.write("writeDouble(");
+                    fragment.execute(writer);
+                    writer.write(")");
+                } else if (p instanceof DateProperty || p instanceof DateTimeProperty) {
+                    writer.write("writeLong(");
+                    fragment.execute(writer);
+                    writer.write(".getTime())");
+                } else if (p instanceof ArrayProperty) {
+                    ArrayProperty ap = (ArrayProperty) p;
+                    Property inner = ap.getItems();
+                    if (inner instanceof StringProperty) {
+                        writer.write("writeStringList(");
+                        fragment.execute(writer);
+                        writer.write(")");
+                    } else if (inner instanceof BooleanProperty
+                            || inner instanceof IntegerProperty
+                            || inner instanceof LongProperty
+                            || inner instanceof FloatProperty
+                            || inner instanceof DoubleProperty) {
+                        writer.write("writeList(");
+                        fragment.execute(writer);
+                        writer.write(")");
+                    } else {
+                        writer.write("writeTypedList(");
+                        fragment.execute(writer);
+                        writer.write(")");
+                    }
+                } else if (p instanceof MapProperty) {
+                    writer.write("writeMap(");
+                    fragment.execute(writer);
+                    writer.write(")");
+                } else {
+                    writer.write("writeParcelable(");
+                    fragment.execute(writer);
+                    writer.write(", flags)");
+                }
             }
-        } else if (p instanceof MapProperty) {
-            return "writeMap(" + name + ")";
-        } else {
-            return "writeParcelable(" + name + ", flags)";
-        }
+        };
     }
 
     public String getDeserializeMethod(String name, Property p) {
@@ -212,6 +270,59 @@ public class AndroidGradleClientCodegen extends DefaultCodegen implements Codege
         } else {
             String type = getSwaggerType(p);
             return name + " = in.readParcelable(" + type + ".class.getClassLoader())";
+        }
+    }
+
+    public String getSerializeMethod(CodegenParameter param) {
+        if (param.dataType.equals("String")) {
+            return "getStringExtra";
+        } else if (param.dataType.equals("boolean")) {
+            return "getBooleanExtra";
+        } else if (param.dataType.equals("int")) {
+            param.defaultValue = "0";
+            return "getIntExtra";
+        } else if (param.dataType.equals("long")) {
+            param.defaultValue = "0";
+            return "getLongExtra";
+        } else if (param.dataType.equals("float")) {
+            param.defaultValue = "0";
+            return "getFloatExtra";
+        } else if (param.dataType.equals("double")) {
+            param.defaultValue = "0";
+            return "getDoubleExtra";
+        } else if (param.dataType.startsWith("List")) {
+            String inner = param.baseType;
+            if (inner.equals("String")) {
+                return "getStringArrayListExtra";
+            } else {
+                return "getParcelableArrayListExtra";
+            }
+
+        } else {
+            return "getParcelableExtra";
+        }
+    }
+
+    public String getDeserializeMethod(CodegenParameter param) {
+        if (param.dataType.startsWith("List")) {
+            String inner = param.baseType;
+            if (inner.equals("String")) {
+                return "putStringArrayListExtra";
+            } else {
+                return "putParcelableArrayListExtra";
+            }
+        } else {
+            return "putExtra";
+        }
+    }
+
+    private String getSerializeMethod(CodegenOperation operation) {
+        if (operation.returnType == null) {
+            return "ApiBroadcastReceiverVoid";
+        } else if (operation.returnType.startsWith("List")) {
+            return "ApiBroadcastReceiverList<" + operation.returnBaseType + ">";
+        } else {
+            return "ApiBroadcastReceiver<" + operation.returnType + ">";
         }
     }
 

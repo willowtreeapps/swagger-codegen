@@ -93,6 +93,7 @@ public class DefaultGenerator implements Generator {
               };
             })
             .defaultValue("")
+            .escapeHTML(false)
             .compile(template);
           writeToFile(filename, tmpl.execute(models));
         }
@@ -128,6 +129,7 @@ public class DefaultGenerator implements Generator {
               };
             })
             .defaultValue("")
+            .escapeHTML(false)
             .compile(template);
 
           writeToFile(filename, tmpl.execute(operation));
@@ -187,6 +189,7 @@ public class DefaultGenerator implements Generator {
               };
             })
             .defaultValue("")
+            .escapeHTML(false)
             .compile(template);
 
           writeToFile(outputFilename, tmpl.execute(bundle));

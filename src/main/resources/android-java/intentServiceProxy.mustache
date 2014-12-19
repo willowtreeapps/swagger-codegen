@@ -1,0 +1,55 @@
+package {{package}}.api;
+
+import {{modelPackage}}.*;
+import {{package}}.ApiBroadcastReceiver;
+import {{package}}.ApiBroadcastReceiverVoid;
+import {{package}}.ApiBroadcastReceiverList;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
+import java.util.*;
+
+{{#imports}}import {{import}};
+{{/imports}}
+
+public class {{classname}}Proxy {
+    protected Context context;
+
+    public {{classname}}Proxy(Context context) {
+        this.context = context;
+    }
+
+{{#operations}}
+{{#operation}}
+    public void {{operationId}}({{#allParams}}{{dataType}} {{paramName}}{{^-last}}, {{/-last}}{{/allParams}}) {
+        startService(newIntent({{classname}}Service.{{operationIdConst}})
+{{#allParams}}
+            .{{deserializeMethodName}}({{classname}}Service.ARG_{{-index}}, {{paramName}}){{#-last}});{{/-last}}
+{{/allParams}}
+    }
+
+    public void register{{operationIdCapital}}({{serializeMethod}} receiver) {
+        register({{classname}}Service.{{operationIdConst}}, receiver);
+    }
+
+{{/operation}}
+{{/operations}}
+
+    private Intent newIntent(String method) {
+        return new Intent(context, {{classname}}Service.class).putExtra({{classname}}Service.METHOD, method);
+    }
+
+    private void startService(Intent intent) {
+        context.startService(intent);
+    }
+
+    public void unregister(BroadcastReceiver receiver) {
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+    }
+
+    private void register(String method, BroadcastReceiver receiver) {
+        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, new IntentFilter(method));
+    }
+}

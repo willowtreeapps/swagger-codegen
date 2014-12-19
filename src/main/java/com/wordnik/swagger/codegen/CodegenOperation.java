@@ -24,6 +24,11 @@ public class CodegenOperation {
   public List<Map<String, String>> examples;
   public ExternalDocs externalDocs;
 
+  public String operationIdConst;
+  public String operationIdCapital;
+
+  public String serializeMethod;
+
   // legacy support
   public String nickname;
 }
