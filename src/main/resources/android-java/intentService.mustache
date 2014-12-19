@@ -47,7 +47,7 @@ public class {{classname}}Service extends IntentService {
         try {
 {{#operations}}
 {{#operation}}
-            if (method.equals({{operationIdConst}})) {
+            {{^-first}}else {{/-first}}if (method.equals({{operationIdConst}})) {
 {{#allParams}}
                 {{dataType}} {{paramName}} = intent.{{#serializeMethod}}ARG_{{-index}}{{/serializeMethod}};
 {{/allParams}}
