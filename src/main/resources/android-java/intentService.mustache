@@ -49,7 +49,7 @@ public class {{classname}}Service extends IntentService {
 {{#operation}}
             if (method.equals({{operationIdConst}})) {
 {{#allParams}}
-                {{dataType}} {{paramName}} = intent.{{serializeMethod}}(ARG_{{-index}}{{#defaultValue}}, {{/defaultValue}}{{defaultValue}});
+                {{dataType}} {{paramName}} = intent.{{#serializeMethod}}ARG_{{-index}}{{/serializeMethod}};
 {{/allParams}}
                 handle{{operationIdCapital}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
             }

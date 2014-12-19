@@ -1,0 +1,29 @@
+package {{package}};
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
+
+/**
+* Created by evantatarka on 12/11/14.
+*/
+public abstract class ApiBroadcastReceiverString extends BroadcastReceiver {
+    public static final String EXTRA_ERROR = "extra_error";
+    public static final String EXTRA_RESPONSE = "extra_response";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (intent.hasExtra(EXTRA_ERROR)) {
+            Exception error = (Exception) intent.getSerializableExtra(EXTRA_ERROR);
+            onError(context, error);
+        } else {
+            String result = intent.getStringExtra(EXTRA_RESPONSE);
+            onSuccess(context, result);
+        }
+    }
+
+    public abstract void onSuccess(Context context, String result);
+
+    public abstract void onError(Context context, Exception error);
+}

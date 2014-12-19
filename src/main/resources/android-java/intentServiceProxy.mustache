@@ -4,10 +4,12 @@ import {{modelPackage}}.*;
 import {{package}}.ApiBroadcastReceiver;
 import {{package}}.ApiBroadcastReceiverVoid;
 import {{package}}.ApiBroadcastReceiverList;
+import {{package}}.ApiBroadcastReceiverString;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import java.util.*;
 
@@ -24,9 +26,9 @@ public class {{classname}}Proxy {
 {{#operations}}
 {{#operation}}
     public void {{operationId}}({{#allParams}}{{dataType}} {{paramName}}{{^-last}}, {{/-last}}{{/allParams}}) {
-        startService(newIntent({{classname}}Service.{{operationIdConst}})
+        startService(newIntent({{classname}}Service.{{operationIdConst}}){{^allparams}});{{/allparams}}
 {{#allParams}}
-            .{{deserializeMethodName}}({{classname}}Service.ARG_{{-index}}, {{paramName}}){{#-last}});{{/-last}}
+            .{{#deserializeMethodName}}{{classname}}Service.ARG_{{-index}}{{/deserializeMethodName}}{{#-last}});{{/-last}}
 {{/allParams}}
     }
 

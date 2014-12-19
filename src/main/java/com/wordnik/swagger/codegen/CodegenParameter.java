@@ -1,5 +1,7 @@
 package com.wordnik.swagger.codegen;
 
+import com.samskivert.mustache.Mustache;
+
 public class CodegenParameter {
   public Boolean hasMore = null, isContainer = null, secondaryParam = null;
   public String baseName, paramName, dataType, collectionFormat, description, baseType;
@@ -11,7 +13,7 @@ public class CodegenParameter {
    */
   public Boolean required;
 
-  public String serializeMethod;
-  public String deserializeMethodName;
+  public Mustache.Lambda serializeMethod;
+  public Mustache.Lambda deserializeMethodName;
   public String defaultValue;
 }
